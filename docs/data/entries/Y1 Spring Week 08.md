@@ -77,6 +77,8 @@ Travel back home, [[Shadow The Wild Cat - Owned Familiar]] greets me with [item:
 
 ### Potion
 
+[[Crow’s Morning Tonic]]
+
 - [item::[[Crow Coal ★★]]] [qty::-1]
 - [item::[[Skullcap ★]]] [qty:: -1]
 - [item:: Silver] [qty:: 30] 10 rep bonus

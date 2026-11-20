@@ -32,6 +32,8 @@ While wandering in the deeper section of the dungeon, I came across a scared loo
 
 ### Potion
 
+[[Silverleaf Bristle Wash]]
+
 - [item:: [[Hair of Boar ★★]]] [qty:: -1]
 - [item:: [[Silverleaf ★]]] [qty:: -1]
 - [item:: Silver] [qty:: 20]

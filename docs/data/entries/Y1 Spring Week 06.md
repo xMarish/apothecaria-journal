@@ -31,6 +31,8 @@ The ground gives way beneath my dropping me into a smooth stone chute which drop
 
 ### Potion
 
+[[Moonbaker’s Balm]]
+
 - [item:: [[Moon Moss ★★★]]] [qty:: -1]
 - [item:: [[Moon Lotus ★★]]] [qty:: -1]
 - [item:: Silver] [qty:: 20]

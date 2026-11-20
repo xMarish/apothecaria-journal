@@ -31,6 +31,8 @@ The angry Golem is back. I hide and wait
 
 ### Potion
 
+[[Stillbreeze Cordial]]
+
 - [item:: [[Fairy Dust ★★]]] [qty:: -2]
 - [item:: Silver] [qty:: 30] 10 rep bonus
  - [item:: Reputation] [qty:: 1]

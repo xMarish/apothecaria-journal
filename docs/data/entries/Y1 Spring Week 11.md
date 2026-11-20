@@ -29,6 +29,8 @@ He teleports me to the entrance and I make my way home spotting shadow running b
 
 ### Potion
 
+[[Floodwater Pick-Me-Up]]
+
 - [item::[[Flood Bulb ★★]]] [qty::-1]
 - [item::[[Skullcap ★]]] [qty::-1]
 - [item:: Silver] [qty:: 30] 10 rep bonus
@@ -105,6 +107,8 @@ Shadow greets me at home with some [[Deathweeds ★★]] by his feet
 - [item::[[Deathweeds ★★]]] [qty::1]
 
 ### Potion
+
+[[Catnap Cordial]]
 
 - [item::[[Driftwood Memories ★★]]] [qty::-1]
 - [item::[[Whisper of a Cat ★★]]] [qty::-1]

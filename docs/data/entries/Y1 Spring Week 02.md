@@ -51,6 +51,8 @@ Time remaining: 6, Forage Points: 3
 
 ### Potion
 
+[[Princess’s Songberry Syrup]]
+
 - [item:: [[Songberries ★]]] [qty:: -1]
 - [item:: [[Princess Toad ★★]]] [qty::-1]
 - [item:: Silver] [qty::24] 20 Silver plus 4 (1 Sweet)

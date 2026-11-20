@@ -31,6 +31,8 @@ Return home, [[Shadow The Wild Cat - Owned Familiar]] gives me
 
 ### Potion
 
+[[Silvermend Salve]]
+
 - [item::[[Surgeon Sap ★★]]] [qty::1]
 - [item::[[Fairy Dust ★★]]] [qty::1]
 - [item:: Silver] [qty:: 30] 10 rep bonus
@@ -92,7 +94,7 @@ Return home, Shadows gives me
 
 ### Potion
 
-Apnea Ointment
+[[Apnea Ointment]]
 
 - [item::[[Nightcap ★★]]] [qty::-1]
 - [item::[[Dentist Crab ★★]]] [qty::-1]

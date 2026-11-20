@@ -36,7 +36,8 @@ While wandering in the deeper section of the dungeon, I came across a scared loo
 
 ### Potion
 
-Rust Coffee
+[[Rust Coffee]]
+
 - [item::[[Coffee Cap ★]]] [qty::-1]
 - [item::[[Coldrust ★]]] [qty::-1]
 - [item:: Silver] [qty:: 24] 20 Silver plus 4 (1 Sweet)

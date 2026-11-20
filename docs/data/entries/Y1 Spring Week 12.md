@@ -41,6 +41,8 @@ Shadow gives me [item::[[Hermit Shroom ★★★]]] [qty::1]
 
 ### Potion
 
+[[Braveheart Milk]]
+
 - [item:: [[Fairy Dust ★★]]] [qty:: -1]
 - [item::[[Milkstone ★★]]] [qty::-1]
 - [item:: [[Skeleton Dust ★★]]] [qty:: -1]
@@ -118,6 +120,8 @@ Return home, Shadow has some [[Nightcap ★★]] too
 - [item::[[Nightcap ★★]]] [qty::1]
 
 ### Potion
+
+[[Songberry Dream Tea]]
 
 - [item::[[Nightcap ★★]]] [qty::-2]
 - [item::[[Songberries ★]]] [qty::-1]

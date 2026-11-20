@@ -28,6 +28,8 @@ Time remaining: 11, Forage Points 0
 
 ### Potion
 
+[[Guppy Spark Draught]]
+
 - [item:: [[Shock Fish ★★]]] [qty:: -1]
 - [item:: [[Golden Scale Guppy ★★]]] [qty:: -1]
 - [item:: Silver] [qty:: 8] 20 Silver less 8 (2 Poison)

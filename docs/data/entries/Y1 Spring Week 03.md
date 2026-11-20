@@ -31,7 +31,7 @@ A bottle washes ashore just ahead of me. It looks ancient but the message inside
 
 ### Potion
 
-Frostwash Tonic
+[[Frostwash Tonic]]
 
  - [item:: [[Glittersnow ★★]]] [qty:: -1]
  - [item:: [[Slime Shell ★★]]] [qty:: -1]

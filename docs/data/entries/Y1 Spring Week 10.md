@@ -31,6 +31,8 @@ Shadows gives me
 
 ### Potion
 
+[[Grounded Glaze]]
+
 - [item::[[Smooth-Croak ★]]] [qty::-1]
 - [item::[[Milkstone ★★]]] [qty::-1]
 - [item:: Silver] [qty:: 30] 10 rep bonus
@@ -94,6 +96,8 @@ I return home, shadow gives me a:
 - [item::[[Coffee Cap ★]]] [qty::1]
 
 ### Potion
+
+[[Starlight Snuffer]]
 
 - [item::[[Wisp Fire ★]]] [qty::-1]
 - [item::[[Hermit Snail ★]]] [qty::-1]

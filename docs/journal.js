@@ -1,4 +1,4 @@
-const groups = { entries: 'Journal Entries', characters: 'Characters', familiars: 'Familiars', places: 'Places', potions: 'Potions' };
+const groups = { entries: 'Journal Entries', characters: 'Characters', familiars: 'Familiars', places: 'Places', potions: 'Potions & Reagents' };
 const page = typeof document !== 'undefined' && document.querySelector('#page');
 const escape = value => value.replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'})[char]);
 const wiki = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
@@ -67,7 +67,7 @@ export function extractVisits(text) {
   return starts.map((start, index) => {
     const section = text.slice(start.index + start[0].length, starts[index + 1]?.index ?? text.length);
     const potion = section.match(/^#{2,6}\s+Potion[ \t]*\r?\n([\s\S]*?)(?=^#{1,6}\s|(?![\s\S]))/im)?.[1] || '';
-    const recipe = potion.trim().split(/\r?\n/)[0]?.trim() || '';
+    const recipe = plain(potion.trim().split(/\r?\n/)[0]?.trim() || '');
     const ingredients = [...potion.matchAll(/\[item::\s*\[\[([^\]]+)\]\]\]/gi)].map(match => plain(match[1]));
     const outcome = potion.match(/\[outcome::\s*([^\]]+)\]/i)?.[1].trim();
     const remark = section.match(/^.*(?:unable to make the treatment|passes out for the night).*$/im)?.[0].trim();
@@ -93,15 +93,15 @@ function render() {
         const treatment = [visit.recipe, visit.ingredients.join(', ')].filter(Boolean).join(' — ');
         return '<section class="visit"><h3><a href="' + route(visit.entry) + '">' + escape(visit.entry.name) +
           '</a></h3><p><strong>Ailment</strong> ' + escape(visit.ailment) + '</p>' +
-          (treatment ? '<p><strong>Treatment</strong> ' + escape(treatment) + '</p>' : '') +
+          (treatment ? '<p><strong>Treatment</strong> ' + inline(visit.recipe ? treatment.replace(visit.recipe, '[[' + visit.recipe + ']]') : treatment) + '</p>' : '') +
           (visit.outcome ? '<p><strong>Outcome</strong> ' + escape(visit.outcome) + '</p>' : '') +
           (visit.remark ? '<p>' + inline(visit.remark) + '</p>' : '') + '</section>';
       }).join('') : '') + (mentions.length ? '<h2>Journal appearances</h2>' + cards(mentions) : '') + '</article>';
   } else if (name) {
     page.innerHTML = '<h1>Page unavailable</h1><a href="#">Return to the journal</a>';
   } else if (group === 'potions') {
-    const recipes = entries.flatMap(entry => entry.visits.filter(visit => visit.recipe).map(visit => '<li><a href="' + route(entry) + '">' + escape(visit.recipe) + '</a></li>'));
-    page.innerHTML = '<article><h1>Potions &amp; Reagents</h1><h2>Rose &amp; Tide Elixir</h2><p>Wild Rose, Fossil Fish, Fairy Dust and Mermaid’s Gift. Moonstone is optional. Tools include a mortar and pestle and a cauldron.</p><h2>Named brews from the journal</h2><ul>' + recipes.join('') + '</ul></article>';
+    const recipes = all.filter(item => item.group === 'potions').sort((a,b) => a.name.localeCompare(b.name));
+    page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes);
   } else if (Object.hasOwn(groups, group)) {
     const items = group === 'entries' ? entries : all.filter(item => item.group === group).sort((a,b) => a.name.localeCompare(b.name));
     page.innerHTML = '<h1>' + groups[group] + '</h1>' + cards(items);
@@ -111,7 +111,7 @@ function render() {
 }
 
 async function load() {
-  const files = JSON.parse(document.querySelector('#files').textContent).filter(path => /^\/data\/(entries|characters|familiars|places)\//.test(path));
+  const files = JSON.parse(document.querySelector('#files').textContent).filter(path => /^\/data\/(entries|characters|familiars|places|potions)\//.test(path));
   if (!files.length) throw new Error('Journal files are missing.');
   await Promise.all(files.map(async path => {
     const [, , group, filename] = path.split('/');
