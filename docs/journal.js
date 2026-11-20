@@ -27,11 +27,19 @@ function emphasis(text) {
   return escape(text).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
 }
 
+function formatTrackingFields(line) {
+  const item = line.match(/\[item::\s*(\[\[[^\n]+?\]\]|[^\]]+)\]\s*\[qty:{1,2}\s*([+-]?\d+(?:\.\d+)?)\s*\]/i);
+  if (!item) return line;
+  const [, name, quantity] = item;
+  const rest = line.slice(item.index + item[0].length).trim();
+  return line.slice(0, item.index) + name.trim() + ' × ' + quantity + (rest ? ' — ' + rest : '');
+}
+
 function renderNote(text) {
   const lines = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').replace(/```dataview[\s\S]*?```/g, '').split(/\r?\n/);
   let html = '', list = false, table = false;
   for (let line of lines) {
-    line = line.replace(/^>\s?/, '').trim();
+    line = formatTrackingFields(line.replace(/^>\s?/, '').trim());
     const bullet = /^[-*]\s+/.test(line);
     const row = line.startsWith('|');
     if (list && !bullet) { html += '</ul>'; list = false; }
