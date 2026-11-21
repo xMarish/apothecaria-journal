@@ -216,8 +216,8 @@ export function extractVisits(text) {
 }
 
 const springArtwork = [
-  "Mirabel meets a dwarf fisherman at Meltwater Loch",
-  "Mirabel tends Vesper beside an ancient oak",
+  "Mirabel meets Morrow at the Calling Ritual",
+  "Mirabel rides Morrow out of Weaver’s Wood",
   "A star-scaled dragon offers Mirabel a Moonstone",
   "Mirabel examines the injured stone golem",
   "Mirabel discovers a silver compass in a dungeon",
@@ -237,8 +237,9 @@ function renderJournalArtwork(note, thumbnail = false) {
   if (!springArtwork[index]) return '';
   const sheet = Math.floor(index / 4) + 1;
   const panel = index % 4;
+  const horseScene = index < 2 ? ' journal-art--morrow journal-art--morrow-' + index : '';
   const label = thumbnail ? 'aria-hidden="true"' : 'role="img" aria-label="' + escape(springArtwork[index]) + '"';
-  return '<div class="journal-art journal-art--sheet-' + sheet + ' journal-art--panel-' + panel + '" ' + label + '></div>';
+  return '<div class="journal-art journal-art--sheet-' + sheet + ' journal-art--panel-' + panel + horseScene + '" ' + label + '></div>';
 }
 
 function cards(items, showArtwork = false, showPortraits = false) {

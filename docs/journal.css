@@ -36,3 +36,5 @@
 .journal-art--sheet-2{background-image:url("./images/journal/spring-journal-2.webp")}
 .journal-art--sheet-3{background-image:url("./images/journal/spring-journal-3.webp")}
 .journal-art--panel-0{background-position:left top}.journal-art--panel-1{background-position:right top}.journal-art--panel-2{background-position:left bottom}.journal-art--panel-3{background-position:right bottom}
+
+.journal-art--morrow{background-image:url("./images/journal/morrow-journal-scenes.webp");background-size:100% 200%}.journal-art--morrow-0{background-position:center top}.journal-art--morrow-1{background-position:center bottom}
