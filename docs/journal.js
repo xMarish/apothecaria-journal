@@ -67,6 +67,18 @@ function formatTrackingFields(line) {
   return line.slice(0, item.index) + name.trim() + ' × ' + quantity + (rest ? ' — ' + rest : '');
 }
 
+const potionArtwork = new Map([
+  ['Guppy Spark Draught', 'guppy'],
+  ['Moonbaker’s Balm', 'moonbaker'],
+  ['Starlight Snuffer', 'starlight'],
+]);
+
+function renderPotionArtwork(note) {
+  const artwork = note.group === 'potions' && potionArtwork.get(note.name);
+  return artwork ? '<div class="potion-art potion-art--' + artwork +
+    '" role="img" aria-label="Illustration of ' + escape(note.name) + '"></div>' : '';
+}
+
 function renderNote(text, group) {
   const lines = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').replace(/```dataview[\s\S]*?```/g, '').split(/\r?\n/);
   let html = '', list = false, table = false;
@@ -123,7 +135,7 @@ function render() {
   if (note && note.group === group) {
     const visits = entries.flatMap(entry => entry.visits.filter(visit => key(visit.name) === key(note.name)).map(visit => ({...visit, entry})));
     const mentions = entries.filter(entry => entry.links.has(key(note.name)));
-    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderNote(note.text, note.group)
+    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderPotionArtwork(note) + renderNote(note.text, note.group)
       + (visits.length ? '<h2>Patient visits</h2>' + visits.map(visit => {
         const treatment = [visit.recipe, visit.ingredients.join(', ')].filter(Boolean).join(' — ');
         return '<section class="visit"><h3><a href="' + route(visit.entry) + '">' + escape(visit.entry.name) +
