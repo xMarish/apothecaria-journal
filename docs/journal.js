@@ -122,8 +122,8 @@ export function extractVisits(text) {
   });
 }
 
-function cards(items) {
-  return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + escape(note.name) + '</a></li>').join('') + '</ul>';
+function cards(items, showArtwork = false) {
+  return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
 }
 
 function render() {
@@ -148,7 +148,7 @@ function render() {
     page.innerHTML = '<h1>Page unavailable</h1><a href="#">Return to the journal</a>';
   } else if (group === 'potions') {
     const recipes = all.filter(item => item.group === 'potions').sort((a,b) => a.name.localeCompare(b.name));
-    page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes);
+    page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes, true);
   } else if (Object.hasOwn(groups, group)) {
     const items = group === 'entries' ? entries : all.filter(item => item.group === group).sort((a,b) => a.name.localeCompare(b.name));
     page.innerHTML = '<h1>' + groups[group] + '</h1>' + cards(items);
