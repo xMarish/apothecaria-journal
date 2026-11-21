@@ -32,9 +32,9 @@
 .portrait-set-5{aspect-ratio:143/165;background-size:300% 200%}.portrait-set-5.portrait-cell-1{background-position:center top}.portrait-set-5.portrait-cell-2{background-position:right top}.portrait-set-5.portrait-cell-3{background-position:left bottom}.portrait-set-5.portrait-cell-4{background-position:center bottom}
 
 .journal-art{width:100%;aspect-ratio:3/2;margin:.75rem 0 1.25rem;background-size:200% 200%;background-repeat:no-repeat;border-radius:.5rem}.cards .journal-art{margin:0 0 .5rem}
-.journal-art--sheet-1{background-image:url("./images/journal/spring-journal-1.webp")}
-.journal-art--sheet-2{background-image:url("./images/journal/spring-journal-2.webp")}
-.journal-art--sheet-3{background-image:url("./images/journal/spring-journal-3.webp")}
+.journal-art--sheet-1{background-image:url("./images/journal/spring-journal-1-mirabel.webp")}
+.journal-art--sheet-2{background-image:url("./images/journal/spring-journal-2-mirabel.webp")}
+.journal-art--sheet-3{background-image:url("./images/journal/spring-journal-3-mirabel.webp")}
 .journal-art--panel-0{background-position:left top}.journal-art--panel-1{background-position:right top}.journal-art--panel-2{background-position:left bottom}.journal-art--panel-3{background-position:right bottom}
 
-.journal-art--morrow{background-image:url("./images/journal/morrow-journal-scenes.webp");background-size:100% 200%}.journal-art--morrow-0{background-position:center top}.journal-art--morrow-1{background-position:center bottom}
+.journal-art--morrow{background-image:url("./images/journal/morrow-journal-scenes-mirabel.webp");background-size:100% 200%}.journal-art--morrow-0{background-position:center top}.journal-art--morrow-1{background-position:center bottom}
