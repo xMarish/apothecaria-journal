@@ -261,17 +261,122 @@ function renderPlaces(items) {
   ).join('');
 }
 
-function renderTools(entries) {
-  const ailments = [...new Set(entries.flatMap(entry =>
-    entry.visits.map(visit => visit.ailment.trim()).filter(Boolean)))];
+const ailmentPool = [
+  ["Restless Leg","Nightfall","Novice",""],
+  ["Stub Toe","Nightfall","Novice",""],
+  ["Insomnia","Nightfall","Novice",""],
+  ["Ill Chill","Nightfall","Novice",""],
+  ["Star Struck","Nightfall","Novice",""],
+  ["Empty Rest","Nightfall","Intermediate",""],
+  ["Snoremancy","Nightfall","Intermediate",""],
+  ["Over-Tipsy","Nightfall","Intermediate",""],
+  ["Brawled Out","Nightfall","Intermediate",""],
+  ["Night Owl","Nightfall","Intermediate",""],
+  ["Fright Light","Nightfall","Advanced",""],
+  ["Sleep Lost","Nightfall","Advanced",""],
+  ["Midnight’s Toll","Nightfall","Advanced",""],
+  ["Sunburn","Nightfall","Advanced",""],
+  ["Light Hearted","Nightfall","Advanced",""],
+  ["The Were Curse","Nightfall","Expert",""],
+  ["Dreamstate","Nightfall","Expert",""],
+  ["Unstabled Nightmares","Nightfall","Expert",""],
+  ["Star Sighted","Nightfall","Expert",""],
+  ["Wounded","Core","Novice",""],
+  ["Phodothropy","Core","Novice",""],
+  ["Druidic Madness","Core","Novice",""],
+  ["Dragon Sickness","Core","Novice",""],
+  ["Yeti Chest","Core","Novice",""],
+  ["Frogified","Core","Novice",""],
+  ["Baker’s Blisters","Core","Novice",""],
+  ["Drunk","Core","Novice",""],
+  ["Magnetic Thumb","Core","Novice",""],
+  ["Cludgie Mouth","Core","Novice",""],
+  ["Hangover","Core","Novice",""],
+  ["Toad Nose","Core","Novice",""],
+  ["Pollen Pox","Core","Novice",""],
+  ["Adventurer’s Rash","Core","Intermediate",""],
+  ["Fae Wind","Core","Intermediate",""],
+  ["Dwarven Lung","Core","Intermediate",""],
+  ["Restless Bones","Core","Intermediate",""],
+  ["Loss of Experience","Core","Intermediate",""],
+  ["Sailor’s Step","Core","Intermediate",""],
+  ["Potion Poison","Core","Intermediate",""],
+  ["Hover Hives","Core","Intermediate",""],
+  ["Ventriloquist Cough","Core","Intermediate",""],
+  ["A Terrible Fright","Core","Intermediate",""],
+  ["Silver Burn","Core","Intermediate",""],
+  ["Tongue Stung","Core","Intermediate",""],
+  ["Bard Boils","Core","Intermediate",""],
+  ["Spore Breath","Core","Advanced",""],
+  ["Giver’s Disease","Core","Advanced",""],
+  ["Candlesick","Core","Advanced",""],
+  ["Shattered Tooth","Core","Advanced",""],
+  ["Thunder Struck","Core","Advanced",""],
+  ["Partial Petrification","Core","Advanced",""],
+  ["Phantom Limb","Core","Advanced",""],
+  ["Reader’s Digestion","Core","Advanced",""],
+  ["Fairy Fever","Core","Advanced",""],
+  ["Ashy Foot","Core","Advanced",""],
+  ["Liar’s Lips","Core","Advanced",""],
+  ["Diver’s Fee","Core","Advanced",""],
+  ["Grumbly Tums","Core","Advanced",""],
+  ["Wrong Form","Core","Expert",""],
+  ["Botched Resurrection","Core","Expert",""],
+  ["Hearth Heart","Core","Expert",""],
+  ["Dragon Mouth","Core","Expert",""],
+  ["Clock Shock","Core","Expert",""],
+  ["Banshee’s Blessing","Core","Expert",""],
+  ["Temporal Hiccups","Core","Expert",""],
+  ["Saturday Night Fever","Core","Expert",""],
+  ["Vampirism","Core","Expert",""],
+  ["Astral Rejection","Core","Expert",""],
+  ["Portal Pinch","Core","Expert",""],
+  ["Ghoul Gnawed","Core","Expert",""],
+  ["Double Trouble","Core","Expert",""],
+  ["Cleaning Frenzy","Dance of Seasons","Novice","Spring"],
+  ["Flowering","Dance of Seasons","Intermediate","Spring"],
+  ["New Year, New Me","Dance of Seasons","Advanced/Expert","Spring"],
+  ["Beach Body","Dance of Seasons","Novice","Summer"],
+  ["Festival Fatigue","Dance of Seasons","Intermediate","Summer"],
+  ["Paint-ful Condition","Dance of Seasons","Advanced","Summer"],
+  ["Sunny Complexion","Dance of Seasons","Expert","Summer"],
+  ["Blasted","Dance of Seasons","Novice","Harvest"],
+  ["Harvested","Dance of Seasons","Intermediate","Harvest"],
+  ["Shocked","Dance of Seasons","Advanced","Harvest"],
+  ["Hollow Head","Dance of Seasons","Expert","Harvest"],
+  ["Festive Fever","Dance of Seasons","Novice","Winter"],
+  ["Holiday Haunted","Dance of Seasons","Intermediate","Winter"],
+  ["Brain-freeze","Dance of Seasons","Advanced","Winter"],
+  ["Humbugged","Dance of Seasons","Expert","Winter"],
+  ["Storm-sneeze","Dance of Seasons","Novice","Storm"],
+  ["That Tingly Sensation","Dance of Seasons","Intermediate","Storm"],
+  ["A Wicked Curse","Dance of Seasons","Advanced","Storm"],
+  ["Lightning Nod","Dance of Seasons","Expert","Storm"]
+];
+
+function renderTools() {
   page.innerHTML = '<h1>Tools</h1><article><h2>Random ailment</h2>' +
-    '<p>Draw an ailment from Mirabel’s recorded visits. Each distinct ailment has an equal chance.</p>' +
-    '<button type="button" id="draw-ailment"' + (ailments.length ? '' : ' disabled') +
-    '>Draw an ailment</button><p id="ailment-result" role="status"></p></article>';
+    '<p>Draw an ailment by source and difficulty. Each matching ailment has an equal chance.</p>' +
+    '<p><label>Source <select id="ailment-source"><option value="">All sources</option><option>Core</option><option>Nightfall</option><option>Dance of Seasons</option></select></label> ' +
+    '<label>Difficulty <select id="ailment-level"><option value="">Any difficulty</option><option>Novice</option><option>Intermediate</option><option>Advanced</option><option>Expert</option></select></label> ' +
+    '<label>Season <select id="ailment-season"><option value="">Any season</option><option>Spring</option><option>Summer</option><option>Harvest</option><option>Winter</option><option>Storm</option></select></label></p>' +
+    '<p>The season filter applies to Dance of Seasons ailments. Select Storm to include storm ailments.</p>' +
+    '<button type="button" id="draw-ailment">Draw an ailment</button><p id="ailment-result" role="status"></p></article>';
+  const source = page.querySelector('#ailment-source');
+  const level = page.querySelector('#ailment-level');
+  const season = page.querySelector('#ailment-season');
   const result = page.querySelector('#ailment-result');
-  if (!ailments.length) result.textContent = 'No ailments have been recorded yet.';
   page.querySelector('#draw-ailment').addEventListener('click', () => {
-    result.textContent = ailments[Math.floor(Math.random() * ailments.length)];
+    const matches = ailmentPool.filter(([, book, difficulty, period]) =>
+      (!source.value || book === source.value) &&
+      (!level.value || difficulty.split('/').includes(level.value)) &&
+      (period !== 'Storm' || season.value === 'Storm') &&
+      (!season.value || !period || period === season.value));
+    if (!matches.length) {
+      result.textContent = 'No ailments match those filters.';
+      return;
+    }
+    result.textContent = matches[Math.floor(Math.random() * matches.length)].filter(Boolean).join(' · ');
   });
 }
 
@@ -299,7 +404,7 @@ function render() {
   } else if (name) {
     page.innerHTML = '<h1>Page unavailable</h1><a href="#">Return to the journal</a>';
   } else if (group === 'tools') {
-    renderTools(entries);
+    renderTools();
   } else if (group === 'potions') {
     const recipes = all.filter(item => item.group === 'potions').sort((a,b) => a.name.localeCompare(b.name));
     page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes, true);
