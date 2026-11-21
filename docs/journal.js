@@ -3,7 +3,10 @@ const page = typeof document !== 'undefined' && document.querySelector('#page');
 const escape = value => value.replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'})[char]);
 const wiki = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
 const plain = value => value.replace(wiki, (_, target, label) => label || target).trim();
-const key = name => name.trim().toLowerCase();
+const key = name => {
+  const normalized = name.trim().toLowerCase();
+  return normalized === 'shadow the wild cat - owned familiar' ? 'shadow the wild cat' : normalized;
+};
 const route = note => '#' + note.group + '/' + encodeURIComponent(note.name);
 const notes = new Map();
 const entryOrder = note => {

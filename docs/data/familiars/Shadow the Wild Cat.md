@@ -1,5 +1,5 @@
 > [!infobox|right wikipedia]+
-> # Shadow The Wild Cat
+> # Shadow the Wild Cat
 > ![[Shadow The Wild Cat.jpg|cover hsmall]]
 > ###### Stats
 > | Biography |
