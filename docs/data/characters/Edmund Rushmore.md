@@ -1,4 +1,4 @@
-![[Edmund Rushmore, the Village Baker.png]]
+![[Edmund Rushmore.webp]]
 
 **Role:** Village baker and co-owner of [[The Hearth Loaf]]  
 **Home:** [[Rannoc Village]]  
