@@ -59,7 +59,30 @@ function emphasis(text) {
   return escape(text).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
 }
 
+function formatPatientRecord(line) {
+  const fields = /\[(npc|ailment|outcome)::[ \t]*(\[\[[^\r\n]+?\]\]|\[[^\]\r\n]+\]\([^\r\n)]+\)|[^\]\r\n]+)\]/gi;
+  const matches = [...line.matchAll(fields)];
+  if (!matches.some(match => match[1].toLowerCase() === 'npc')) return line;
+
+  let end = matches[0].index;
+  if (!/^(?:[-*]\s+)?$/.test(line.slice(0, end))) return line;
+  const values = [];
+  for (const match of matches) {
+    if (line.slice(end, match.index).trim()) return line;
+    end = match.index + match[0].length;
+    let value = match[2].trim();
+    if (match[1].toLowerCase() === 'npc') {
+      const markdownLink = value.match(/^\[([^\]]+)\]\([^)]+\)$/);
+      if (markdownLink) value = markdownLink[1];
+      if (!value.startsWith('[[')) value = '[[' + value + ']]';
+    }
+    values.push(value);
+  }
+  return line.slice(0, matches[0].index) + values.join(' · ') + line.slice(end);
+}
+
 function formatTrackingFields(line) {
+  line = formatPatientRecord(line);
   const item = line.match(/\[item::\s*(\[\[[^\n]+?\]\]|[^\]]+)\]\s*\[qty:{1,2}\s*([+-]?\d+(?:\.\d+)?)\s*\]/i);
   if (!item) return line;
   const [, name, quantity] = item;
