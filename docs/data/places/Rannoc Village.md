@@ -5,4 +5,4 @@
 - [[Lunar Tower]]
 - [[Rannoc Rainments]]
 - [[Ritual Circle]]
-- [[The Heath Loaf]]
+- [[The Hearth Loaf]]
