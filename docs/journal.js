@@ -71,6 +71,20 @@ const potionArtwork = new Map([
   ['Guppy Spark Draught', 'guppy'],
   ['Moonbaker’s Balm', 'moonbaker'],
   ['Starlight Snuffer', 'starlight'],
+  ["Apnea Ointment", 'set-1 potion-art--top-left'],
+  ["Braveheart Milk", 'set-1 potion-art--top-right'],
+  ["Catnap Cordial", 'set-1 potion-art--bottom-left'],
+  ["Crow’s Morning Tonic", 'set-1 potion-art--bottom-right'],
+  ["Floodwater Pick-Me-Up", 'set-2 potion-art--top-left'],
+  ["Frostwash Tonic", 'set-2 potion-art--top-right'],
+  ["Grounded Glaze", 'set-2 potion-art--bottom-left'],
+  ["Princess’s Songberry Syrup", 'set-2 potion-art--bottom-right'],
+  ["Rose & Tide Elixir", 'set-3 potion-art--top-left'],
+  ["Rust Coffee", 'set-3 potion-art--top-right'],
+  ["Silverleaf Bristle Wash", 'set-3 potion-art--bottom-left'],
+  ["Silvermend Salve", 'set-3 potion-art--bottom-right'],
+  ["Songberry Dream Tea", 'set-4 potion-art--top-left'],
+  ["Stillbreeze Cordial", 'set-4 potion-art--top-right'],
 ]);
 
 function renderPotionArtwork(note) {
