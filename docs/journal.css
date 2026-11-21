@@ -3,4 +3,4 @@
 
 .reagent-thumbnail{width:2.6rem;height:2.6rem;object-fit:contain;vertical-align:middle;margin:.12rem .2rem .12rem 0}.recipe-ingredient{display:inline-block}
 
-.potion-art{width:min(100%,17rem);aspect-ratio:1;margin:1rem 0;background:url("./images/potions/potion-trio.webp") left center / 300% 100% no-repeat}.potion-art--moonbaker{background-position:center}.potion-art--starlight{background-position:right center}
+.potion-art{width:min(100%,6rem);aspect-ratio:1;margin:.5rem 0;background:url("./images/potions/potion-trio.webp") left center / 300% 100% no-repeat}.potion-art--moonbaker{background-position:center}.potion-art--starlight{background-position:right center}
