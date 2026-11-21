@@ -108,7 +108,37 @@ function portraitPath(note) {
   return embed ? portraits.get(portraitKey(embed[1].split('/').at(-1))) : undefined;
 }
 
+const colourPortraits = new Map([
+  ["Albart Underwood", 'portrait-set-1 portrait-cell-0'],
+  ["Aloinur Balow", 'portrait-set-1 portrait-cell-1'],
+  ["Aurelius the Argent", 'portrait-set-1 portrait-cell-2'],
+  ["Ballia Gamgee", 'portrait-set-1 portrait-cell-3'],
+  ["Clatch Grimwart", 'portrait-set-2 portrait-cell-0'],
+  ["Dachsbun", 'portrait-set-2 portrait-cell-1'],
+  ["Elowen Vance", 'portrait-set-2 portrait-cell-2'],
+  ["Erli Woodard", 'portrait-set-2 portrait-cell-3'],
+  ["Falke of the Road", 'portrait-set-3 portrait-cell-0'],
+  ["Felux Dawncrest", 'portrait-set-3 portrait-cell-1'],
+  ["Iluver Bassett", 'portrait-set-3 portrait-cell-2'],
+  ["Malakor the Blightgargoyle", 'portrait-set-3 portrait-cell-3'],
+  ["Nereon the Naiad", 'portrait-set-4 portrait-cell-0'],
+  ["Olax Mintz", 'portrait-set-4 portrait-cell-1'],
+  ["Stone Golem", 'portrait-set-4 portrait-cell-2'],
+  ["Tamsin Rushmore", 'portrait-set-4 portrait-cell-3'],
+  ["Bumble The Bee-Chinchilla", 'portrait-set-5 portrait-cell-0'],
+  ["Ribs the Frog Familiar", 'portrait-set-5 portrait-cell-1'],
+  ["Sophie the Night Gryphon", 'portrait-set-5 portrait-cell-2'],
+  ["Spider the Spider", 'portrait-set-5 portrait-cell-3'],
+  ["Vesper the Raven Familiar", 'portrait-set-5 portrait-cell-4'],
+]);
+
 function renderPortrait(note, thumbnail = false) {
+  const artwork = colourPortraits.get(note.name);
+  if (artwork) {
+    const label = thumbnail ? 'aria-hidden="true"' : 'role="img" aria-label="Portrait of ' + escape(note.name) + '"';
+    return '<div class="colour-portrait ' + (thumbnail ? 'portrait-thumbnail' : 'profile-portrait') +
+      '"><div class="portrait-cell ' + artwork + '" ' + label + '></div></div>';
+  }
   const path = portraitPath(note);
   if (!path) return '';
   const src = '.' + path.split('/').map(encodeURIComponent).join('/');
@@ -160,7 +190,7 @@ export function extractVisits(text) {
 }
 
 function cards(items, showArtwork = false, showPortraits = false) {
-  const showPortraitSlots = showPortraits && items.some(portraitPath);
+  const showPortraitSlots = showPortraits && items.some(note => colourPortraits.has(note.name) || portraitPath(note));
   return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + (showPortraitSlots ? renderPortrait(note, true) || '<span class="portrait-thumbnail" aria-hidden="true"></span>' : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
 }
 
