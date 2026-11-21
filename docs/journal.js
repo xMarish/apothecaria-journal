@@ -215,9 +215,35 @@ export function extractVisits(text) {
   });
 }
 
+const springArtwork = [
+  "Mirabel meets a dwarf fisherman at Meltwater Loch",
+  "Mirabel tends Vesper beside an ancient oak",
+  "A star-scaled dragon offers Mirabel a Moonstone",
+  "Mirabel examines the injured stone golem",
+  "Mirabel discovers a silver compass in a dungeon",
+  "A mountain giant offers Mirabel shelter from the rain",
+  "Mirabel hides from the angry Glimmerwood Golem",
+  "Mirabel finds an elf seated on a golden throne",
+  "A siren offers Mirabel a Fossil Fish",
+  "Mirabel spots a reagent among the rocks at Meltwater Loch",
+  "Mirabel distracts carnivorous plants with a glowing wand",
+  "A deer with amethyst antlers flees a woodland clearing",
+];
+
+function renderJournalArtwork(note, thumbnail = false) {
+  if (note.group !== 'entries') return '';
+  const match = /^Y1 Spring Week ([0-9]{2})$/.exec(note.name);
+  const index = match ? Number(match[1]) - 1 : -1;
+  if (!springArtwork[index]) return '';
+  const sheet = Math.floor(index / 4) + 1;
+  const panel = index % 4;
+  const label = thumbnail ? 'aria-hidden="true"' : 'role="img" aria-label="' + escape(springArtwork[index]) + '"';
+  return '<div class="journal-art journal-art--sheet-' + sheet + ' journal-art--panel-' + panel + '" ' + label + '></div>';
+}
+
 function cards(items, showArtwork = false, showPortraits = false) {
   const showPortraitSlots = showPortraits && items.some(note => colourPortraits.has(note.name) || portraitPath(note));
-  return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + (showPortraitSlots ? renderPortrait(note, true) || '<span class="portrait-thumbnail" aria-hidden="true"></span>' : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
+  return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + renderJournalArtwork(note, true) + (showPortraitSlots ? renderPortrait(note, true) || '<span class="portrait-thumbnail" aria-hidden="true"></span>' : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
 }
 
 function renderPlaces(items) {
@@ -246,7 +272,7 @@ function render() {
   if (note && note.group === group) {
     const visits = entries.flatMap(entry => entry.visits.filter(visit => key(visit.name) === key(note.name)).map(visit => ({...visit, entry})));
     const mentions = entries.filter(entry => entry.links.has(key(note.name)));
-    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderPotionArtwork(note) + (group === 'characters' || group === 'familiars' || group === 'places' ? renderPortrait(note) : '') + renderNote(note.text, note.group)
+    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderPotionArtwork(note) + renderJournalArtwork(note) + (group === 'characters' || group === 'familiars' || group === 'places' ? renderPortrait(note) : '') + renderNote(note.text, note.group)
       + (visits.length ? '<h2>Patient visits</h2>' + visits.map(visit => {
         const treatment = [visit.recipe, visit.ingredients.join(', ')].filter(Boolean).join(' — ');
         return '<section class="visit"><h3><a href="' + route(visit.entry) + '">' + escape(visit.entry.name) +
