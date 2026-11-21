@@ -196,7 +196,10 @@ function cards(items, showArtwork = false, showPortraits = false) {
 
 function render() {
   const [group, encoded] = location.hash.slice(1).split('/');
-  const name = encoded ? decodeURIComponent(encoded) : '';
+  const requestedName = encoded ? decodeURIComponent(encoded) : '';
+  const name = group === 'places' && requestedName === 'Mirabel’s Cottage'
+    ? 'The Open Eye Apothecary'
+    : requestedName;
   const note = notes.get(key(name));
   const all = [...notes.values()];
   const entries = all.filter(item => item.group === 'entries').sort((a,b) => entryOrder(b) - entryOrder(a) || b.name.localeCompare(a.name));

@@ -17,6 +17,6 @@ layout: null
 <script id="files" type="application/json">[{% assign files = site.static_files | where_exp: "file", "file.extname == '.md'" %}{% for file in files %}{% unless forloop.first %},{% endunless %}{{ file.path | jsonify }}{% endfor %}]</script>
 <script id="reagent-images" type="application/json">[{% assign images = site.static_files | where_exp: "file", "file.path contains '/images/reagents/'" %}{% assign separator = "" %}{% for image in images %}{% if image.extname == '.png' or image.extname == '.webp' or image.extname == '.jpg' or image.extname == '.jpeg' %}{{ separator }}{{ image.path | jsonify }}{% assign separator = "," %}{% endif %}{% endfor %}]</script>
 <script id="portrait-images" type="application/json">[{% assign separator = "" %}{% for portrait in site.static_files %}{% if portrait.path contains '/images/portraits/' or portrait.path contains '/images/places/' %}{% assign ext = portrait.extname | downcase %}{% if ext == '.png' or ext == '.jpg' or ext == '.jpeg' or ext == '.webp' or ext == '.gif' or ext == '.avif' %}{{ separator }}{{ portrait.path | jsonify }}{% assign separator = "," %}{% endif %}{% endif %}{% endfor %}]</script>
-<script type="module" src="journal.js?v=colour-portraits"></script>
+<script type="module" src="journal.js?v=open-eye-cottage"></script>
 </body>
 </html>
