@@ -6,3 +6,6 @@
 - [[Rannoc Rainments]]
 - [[Ritual Circle]]
 - [[The Hearth Loaf]] — the village bakery, owned by [[Edmund Rushmore]] and [[Tamsin Rushmore]]
+
+## Future Encounters
+- [[Unused Shops and NPCs]]
