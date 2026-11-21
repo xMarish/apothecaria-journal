@@ -93,6 +93,29 @@ function renderPotionArtwork(note) {
     '" role="img" aria-label="Illustration of ' + escape(note.name) + '"></div>' : '';
 }
 
+const portraits = new Map();
+const portraitKey = name => name.normalize('NFKC').toLowerCase().replace(/\.[^.]+$/, '').replace(/[^\p{L}\p{N}]/gu, '');
+
+function loadPortraits() {
+  const paths = JSON.parse(document.querySelector('#portrait-images').textContent);
+  for (const path of paths) portraits.set(portraitKey(path.split('/').at(-1)), path);
+}
+
+function portraitPath(note) {
+  const named = portraits.get(portraitKey(note.name));
+  if (named) return named;
+  const embed = note.text.match(/!\[\[([^|\]\r\n]+\.(?:png|jpe?g|webp|gif|avif))(?:\|[^\]]*)?\]\]/i);
+  return embed ? portraits.get(portraitKey(embed[1].split('/').at(-1))) : undefined;
+}
+
+function renderPortrait(note, thumbnail = false) {
+  const path = portraitPath(note);
+  if (!path) return '';
+  const src = '.' + path.split('/').map(encodeURIComponent).join('/');
+  return '<img class="' + (thumbnail ? 'portrait-thumbnail' : 'profile-portrait') +
+    '" src="' + src + '" alt="' + (thumbnail ? '' : 'Portrait of ' + escape(note.name)) + '" loading="lazy" decoding="async">';
+}
+
 function renderNote(text, group) {
   const lines = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').replace(/```dataview[\s\S]*?```/g, '').split(/\r?\n/);
   let html = '', list = false, table = false;
@@ -136,8 +159,9 @@ export function extractVisits(text) {
   });
 }
 
-function cards(items, showArtwork = false) {
-  return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
+function cards(items, showArtwork = false, showPortraits = false) {
+  const showPortraitSlots = showPortraits && items.some(portraitPath);
+  return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + (showPortraitSlots ? renderPortrait(note, true) || '<span class="portrait-thumbnail" aria-hidden="true"></span>' : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
 }
 
 function render() {
@@ -149,7 +173,7 @@ function render() {
   if (note && note.group === group) {
     const visits = entries.flatMap(entry => entry.visits.filter(visit => key(visit.name) === key(note.name)).map(visit => ({...visit, entry})));
     const mentions = entries.filter(entry => entry.links.has(key(note.name)));
-    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderPotionArtwork(note) + renderNote(note.text, note.group)
+    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderPotionArtwork(note) + (group === 'characters' || group === 'familiars' ? renderPortrait(note) : '') + renderNote(note.text, note.group)
       + (visits.length ? '<h2>Patient visits</h2>' + visits.map(visit => {
         const treatment = [visit.recipe, visit.ingredients.join(', ')].filter(Boolean).join(' — ');
         return '<section class="visit"><h3><a href="' + route(visit.entry) + '">' + escape(visit.entry.name) +
@@ -165,7 +189,7 @@ function render() {
     page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes, true);
   } else if (Object.hasOwn(groups, group)) {
     const items = group === 'entries' ? entries : all.filter(item => item.group === group).sort((a,b) => a.name.localeCompare(b.name));
-    page.innerHTML = '<h1>' + groups[group] + '</h1>' + cards(items);
+    page.innerHTML = '<h1>' + groups[group] + '</h1>' + cards(items, false, group === 'characters' || group === 'familiars');
   } else {
     page.innerHTML = '<h1>Mirabel Hollow’s<br>Apothecary Journal</h1><p>Follow Mirabel and her familiars through the village, from foraging trips to the patients at her cottage door.</p><h2>Latest journal entries</h2>' + cards(entries.slice(0,4)) + '<p><a href="#entries">Browse all journal entries</a></p>';
   }
@@ -173,6 +197,7 @@ function render() {
 
 async function load() {
   loadReagentImages();
+  loadPortraits();
   const files = JSON.parse(document.querySelector('#files').textContent).filter(path => /^\/data\/(entries|characters|familiars|places|potions)\//.test(path));
   if (!files.length) throw new Error('Journal files are missing.');
   await Promise.all(files.map(async path => {
