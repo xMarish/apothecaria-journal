@@ -37,6 +37,6 @@ Time remaining: 11, Forage Points 0
 - [npc:: [[Felux Dawncrest]]] [ailment::[[Magnetic Thumb ★]]] [outcome:: Cured]
 
 ## Downtime
-Performed "The Calling Ritual"
+Performed "The Calling Ritual" and met [[Morrow]].
 
 Planted Surgeon Sap into my Garden Plot
