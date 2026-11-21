@@ -5,4 +5,4 @@
 - [[Lunar Tower]]
 - [[Rannoc Rainments]]
 - [[Ritual Circle]]
-- [[The Hearth Loaf]]
+- [[The Hearth Loaf]] — the village bakery, owned by [[Edmund Rushmore]] and [[Tamsin Rushmore]]

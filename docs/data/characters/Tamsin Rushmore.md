@@ -27,5 +27,5 @@ SORT file.name ASC
 ```
 
 ## Notes
-- Works at [[The Hearth Loaf]]
+- Co-owns [[The Hearth Loaf]] with her father, [[Edmund Rushmore]]
 - Daughter of [[Edmund Rushmore]]

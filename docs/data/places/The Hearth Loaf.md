@@ -1,4 +1,4 @@
-**Owner:** [[]]
+**Owners:** [[Edmund Rushmore]] and [[Tamsin Rushmore]]
 **Village:** [[Rannoc Village]]
 
 ## Shop Notes
