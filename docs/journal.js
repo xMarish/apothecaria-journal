@@ -261,6 +261,20 @@ function renderPlaces(items) {
   ).join('');
 }
 
+function renderTools(entries) {
+  const ailments = [...new Set(entries.flatMap(entry =>
+    entry.visits.map(visit => visit.ailment.trim()).filter(Boolean)))];
+  page.innerHTML = '<h1>Tools</h1><article><h2>Random ailment</h2>' +
+    '<p>Draw an ailment from Mirabel’s recorded visits. Each distinct ailment has an equal chance.</p>' +
+    '<button type="button" id="draw-ailment"' + (ailments.length ? '' : ' disabled') +
+    '>Draw an ailment</button><p id="ailment-result" role="status"></p></article>';
+  const result = page.querySelector('#ailment-result');
+  if (!ailments.length) result.textContent = 'No ailments have been recorded yet.';
+  page.querySelector('#draw-ailment').addEventListener('click', () => {
+    result.textContent = ailments[Math.floor(Math.random() * ailments.length)];
+  });
+}
+
 function render() {
   const [group, encoded] = location.hash.slice(1).split('/');
   const requestedName = encoded ? decodeURIComponent(encoded) : '';
@@ -284,6 +298,8 @@ function render() {
       }).join('') : '') + (mentions.length ? '<h2>Journal appearances</h2>' + cards(mentions) : '') + '</article>';
   } else if (name) {
     page.innerHTML = '<h1>Page unavailable</h1><a href="#">Return to the journal</a>';
+  } else if (group === 'tools') {
+    renderTools(entries);
   } else if (group === 'potions') {
     const recipes = all.filter(item => item.group === 'potions').sort((a,b) => a.name.localeCompare(b.name));
     page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes, true);

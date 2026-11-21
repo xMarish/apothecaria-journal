@@ -11,12 +11,12 @@ layout: null
 </head>
 <body>
 <header><a href="#"><strong>Mirabel Hollow</strong><span>The Apothecary Journal</span></a>
-<nav aria-label="Journal"><a href="#entries">Entries</a><a href="#characters">Characters</a><a href="#familiars">Familiars</a><a href="#places">Places</a><a href="#potions">Potions</a></nav></header>
+<nav aria-label="Journal"><a href="#entries">Entries</a><a href="#characters">Characters</a><a href="#familiars">Familiars</a><a href="#places">Places</a><a href="#potions">Potions</a><a href="#tools">Tools</a></nav></header>
 <main id="page" aria-live="polite">Opening the journal…</main>
 <footer>An unofficial <i>Apothecaria</i> solo playthrough.</footer>
 <script id="files" type="application/json">[{% assign files = site.static_files | where_exp: "file", "file.extname == '.md'" %}{% for file in files %}{% unless forloop.first %},{% endunless %}{{ file.path | jsonify }}{% endfor %}]</script>
 <script id="reagent-images" type="application/json">[{% assign images = site.static_files | where_exp: "file", "file.path contains '/images/reagents/'" %}{% assign separator = "" %}{% for image in images %}{% if image.extname == '.png' or image.extname == '.webp' or image.extname == '.jpg' or image.extname == '.jpeg' %}{{ separator }}{{ image.path | jsonify }}{% assign separator = "," %}{% endif %}{% endfor %}]</script>
 <script id="portrait-images" type="application/json">[{% assign separator = "" %}{% for portrait in site.static_files %}{% if portrait.path contains '/images/portraits/' or portrait.path contains '/images/places/' %}{% assign ext = portrait.extname | downcase %}{% if ext == '.png' or ext == '.jpg' or ext == '.jpeg' or ext == '.webp' or ext == '.gif' or ext == '.avif' %}{{ separator }}{{ portrait.path | jsonify }}{% assign separator = "," %}{% endif %}{% endif %}{% endfor %}]</script>
-<script type="module" src="journal.js?v=rushmore-bakery"></script>
+<script type="module" src="journal.js?v=ailment-tools"></script>
 </body>
 </html>
