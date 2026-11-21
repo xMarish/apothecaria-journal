@@ -1,0 +1,1103 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Apothecaria Ailment Generator</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+
+
+:root {
+  --bg: #faf8f4;
+  --bg2: #f0ece3;
+  --bg3: #e6dfd3;
+  --fg: #1c1a17;
+  --fg2: #5a5448;
+  --rule: #d4c9b8;
+  --accent: #5c3d1e;
+  --accent2: #8a5a2e;
+  --novice: #2d6b1a;
+  --novice-bg: #e8f4e3;
+  --inter: #1a4a7a;
+  --inter-bg: #e3ecf5;
+  --advanced: #7a2a6a;
+  --advanced-bg: #f5e3f2;
+  --expert: #8a1a1a;
+  --expert-bg: #fce8e8;
+  --nightfall: #3a2a6a;
+  --nightfall-bg: #ece8f5;
+  --spring: #2a6b2a;
+  --spring-bg: #e3f4e3;
+  --summer: #7a6a1a;
+  --summer-bg: #f5f0d0;
+  --harvest: #8a4a1a;
+  --harvest-bg: #f5e8d8;
+  --winter: #2a4a7a;
+  --winter-bg: #d8e8f5;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1a1710;
+    --bg2: #221f16;
+    --bg3: #2a261a;
+    --fg: #e8e0d0;
+    --fg2: #9a9080;
+    --rule: #3a3528;
+    --accent: #c8914e;
+    --accent2: #d4a870;
+    --novice: #7ecf5a;
+    --novice-bg: #1a2e14;
+    --inter: #60a4d4;
+    --inter-bg: #0e1e2e;
+    --advanced: #cc88bb;
+    --advanced-bg: #2a1428;
+    --expert: #e88a8a;
+    --expert-bg: #2e1010;
+    --nightfall: #9a8adf;
+    --nightfall-bg: #1e1a30;
+    --spring: #7ecf5a; --spring-bg: #142e14;
+    --summer: #d4c060; --summer-bg: #2e2a0e;
+    --harvest: #d4904e; --harvest-bg: #2e1a0a;
+    --winter: #60a4d4; --winter-bg: #0e1e2e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1a1710; --bg2: #221f16; --bg3: #2a261a;
+  --fg: #e8e0d0; --fg2: #9a9080; --rule: #3a3528;
+  --accent: #c8914e; --accent2: #d4a870;
+  --novice: #7ecf5a; --novice-bg: #1a2e14;
+  --inter: #60a4d4; --inter-bg: #0e1e2e;
+  --advanced: #cc88bb; --advanced-bg: #2a1428;
+  --expert: #e88a8a; --expert-bg: #2e1010;
+  --nightfall: #9a8adf; --nightfall-bg: #1e1a30;
+  --spring: #7ecf5a; --spring-bg: #142e14;
+  --summer: #d4c060; --summer-bg: #2e2a0e;
+  --harvest: #d4904e; --harvest-bg: #2e1a0a;
+  --winter: #60a4d4; --winter-bg: #0e1e2e;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  padding-block: 28px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+.subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  color: var(--fg2);
+  font-size: 15px;
+  margin: 0 0 28px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding: 18px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+.control-group { display: flex; flex-direction: column; gap: 6px; }
+.control-group label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+.rep-row { display: flex; align-items: center; gap: 10px; }
+.rep-input {
+  width: 72px;
+  padding: 7px 10px;
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  -moz-appearance: textfield;
+}
+.rep-input::-webkit-inner-spin-button, .rep-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.rep-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.rep-tier {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+.rep-tier.novice    { background: var(--novice-bg);   color: var(--novice); }
+.rep-tier.inter     { background: var(--inter-bg);    color: var(--inter); }
+.rep-tier.advanced  { background: var(--advanced-bg); color: var(--advanced); }
+.rep-tier.expert    { background: var(--expert-bg);   color: var(--expert); }
+
+.toggle-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.toggle-btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  border: 1.5px solid var(--rule);
+  background: var(--bg);
+  color: var(--fg2);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.toggle-btn:hover { background: var(--bg3); }
+.toggle-btn.on { background: var(--nightfall-bg); color: var(--nightfall); border-color: var(--nightfall); }
+.toggle-btn.on.spring  { background: var(--spring-bg);  color: var(--spring);  border-color: var(--spring); }
+.toggle-btn.on.summer  { background: var(--summer-bg);  color: var(--summer);  border-color: var(--summer); }
+.toggle-btn.on.harvest { background: var(--harvest-bg); color: var(--harvest); border-color: var(--harvest); }
+.toggle-btn.on.winter  { background: var(--winter-bg);  color: var(--winter);  border-color: var(--winter); }
+
+.season-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.season-badge {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+}
+.season-badge.spring  { background: var(--spring-bg);  color: var(--spring); }
+.season-badge.summer  { background: var(--summer-bg);  color: var(--summer); }
+.season-badge.harvest { background: var(--harvest-bg); color: var(--harvest); }
+.season-badge.winter  { background: var(--winter-bg);  color: var(--winter); }
+.toggle-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: currentColor; opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.toggle-btn.on .toggle-dot { opacity: 1; }
+
+.tier-toggles { display: flex; gap: 8px; flex-wrap: wrap; }
+.tier-btn {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--rule);
+  background: var(--bg);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--fg2);
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.tier-btn:hover { background: var(--bg3); }
+.tier-btn.on.novice   { background: var(--novice-bg);   color: var(--novice);   border-color: var(--novice); }
+.tier-btn.on.inter    { background: var(--inter-bg);    color: var(--inter);    border-color: var(--inter); }
+.tier-btn.on.advanced { background: var(--advanced-bg); color: var(--advanced); border-color: var(--advanced); }
+.tier-btn.on.expert   { background: var(--expert-bg);   color: var(--expert);   border-color: var(--expert); }
+
+.tier-hint {
+  font-size: 12px;
+  color: var(--fg2);
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* Roll button */
+.roll-btn {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 28px;
+  padding: 14px 24px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.roll-btn:hover { background: var(--accent2); }
+.roll-btn:active { transform: scale(0.98); }
+.roll-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Result card */
+.result-card {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  border: 2px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.result-header {
+  padding: 14px 18px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.result-name {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0;
+  line-height: 1.2;
+}
+.result-tier-badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.result-tier-badge.novice   { background: var(--novice-bg);   color: var(--novice); }
+.result-tier-badge.inter    { background: var(--inter-bg);    color: var(--inter); }
+.result-tier-badge.advanced { background: var(--advanced-bg); color: var(--advanced); }
+.result-tier-badge.expert   { background: var(--expert-bg);   color: var(--expert); }
+
+.result-tags {
+  padding: 10px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-top: 1px solid var(--rule);
+  background: var(--bg2);
+}
+.ailment-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.tag-stars { color: #c8911a; font-size: 10px; letter-spacing: 1px; }
+.timer-badge {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; color: var(--fg2);
+  font-style: italic;
+}
+
+.result-desc {
+  padding: 12px 18px;
+  font-size: 14px;
+  color: var(--fg2);
+  font-style: italic;
+  font-family: 'Crimson Pro', serif;
+  line-height: 1.5;
+  border-top: 1px solid var(--rule);
+}
+.result-consequence {
+  padding: 10px 18px;
+  font-size: 13px;
+  color: var(--fg);
+  border-top: 1px solid var(--rule);
+  background: var(--bg2);
+}
+.result-consequence strong { color: var(--accent); }
+
+.result-reagents {
+  padding: 12px 18px;
+  border-top: 1px solid var(--rule);
+}
+.reagents-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg2);
+  margin-bottom: 8px;
+}
+.reagent-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.reagent-chip {
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  color: var(--fg);
+}
+.reagent-chip.have { border-color: var(--novice); color: var(--novice); background: var(--novice-bg); }
+.reagent-chip.none { opacity: 0.55; }
+
+/* Patient card */
+.patient-section { max-width: 600px; margin: 0 auto 24px; }
+.patient-btn {
+  display: block; width: 100%; padding: 11px 20px;
+  background: var(--bg2); color: var(--fg);
+  border: 1.5px solid var(--rule); border-radius: 8px;
+  font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; font-weight: 600;
+  cursor: pointer; transition: background 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.patient-btn:hover { background: var(--bg3); }
+.patient-card {
+  margin-top: 12px; padding: 14px 18px;
+  background: var(--bg2); border: 1.5px solid var(--rule); border-radius: 8px;
+  animation: fadeIn 0.3s ease;
+}
+.patient-type-badge {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 2px 9px; border-radius: 20px; margin-bottom: 8px;
+}
+.patient-type-badge.villager   { background: var(--novice-bg);   color: var(--novice); }
+.patient-type-badge.adventurer { background: var(--inter-bg);    color: var(--inter); }
+.patient-type-badge.monster    { background: var(--advanced-bg); color: var(--advanced); }
+.patient-type-badge.repeat     { background: var(--bg3);         color: var(--fg2); }
+.patient-name {
+  font-family: 'Crimson Pro', Georgia, serif; font-size: 22px; font-weight: 600;
+  color: var(--fg); margin: 0 0 2px;
+}
+.patient-job { font-size: 13px; color: var(--fg2); margin-bottom: 8px; }
+.patient-flavour {
+  font-family: 'Crimson Pro', serif; font-style: italic;
+  font-size: 14px; color: var(--fg2); line-height: 1.5;
+}
+.portrait-prompt-wrap {
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--rule);
+}
+.portrait-prompt-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--fg2); margin-bottom: 6px;
+}
+.portrait-prompt-text {
+  font-size: 12px; color: var(--fg2); font-family: monospace;
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 4px;
+  padding: 8px 10px; line-height: 1.5; margin-bottom: 8px;
+  word-break: break-word;
+}
+.copy-prompt-btn {
+  padding: 5px 14px; border-radius: 6px;
+  border: 1.5px solid var(--rule); background: var(--bg);
+  color: var(--fg2); font-family: 'Source Sans 3', sans-serif;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-prompt-btn:hover { background: var(--bg3); }
+.copy-prompt-btn.copied { border-color: var(--novice); color: var(--novice); background: var(--novice-bg); }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--fg2);
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 17px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* History */
+.history-section { max-width: 600px; margin: 0 auto; }
+.history-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg2);
+  margin-bottom: 10px;
+}
+.history-list { display: flex; flex-direction: column; gap: 4px; }
+.history-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--fg2);
+}
+.history-name { font-weight: 600; color: var(--fg); font-family: 'Crimson Pro', serif; font-size: 15px; }
+.history-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.history-dot.novice   { background: var(--novice); }
+.history-dot.inter    { background: var(--inter); }
+.history-dot.advanced { background: var(--advanced); }
+.history-dot.expert   { background: var(--expert); }
+</style>
+
+<h1>Apothecaria</h1>
+<p class="subtitle">Ailment Generator</p>
+
+<div class="controls">
+  <div class="control-group">
+    <label>Reputation</label>
+    <div class="rep-row">
+      <input aria-label="Reputation" class="rep-input" id="repInput" type="number" min="0" max="99" value="0">
+      <span class="rep-tier novice" id="repTierLabel">Novice (0–10)</span>
+    </div>
+    <div class="tier-hint" id="tierHint">Rolling from: Novice ailments</div>
+  </div>
+  <div class="control-group">
+    <label>Nightfall Expansion</label>
+    <div class="toggle-row">
+      <button class="toggle-btn" id="nightfallToggle">
+        <span class="toggle-dot"></span> Nightfall
+      </button>
+    </div>
+  </div>
+  <div class="control-group" id="seasonGroup">
+    <label>Dance of Seasons</label>
+    <div class="season-btns">
+      <button class="toggle-btn spring" id="seasonSpring" data-season="spring"><span class="toggle-dot"></span> Spring</button>
+      <button class="toggle-btn summer" id="seasonSummer" data-season="summer"><span class="toggle-dot"></span> Summer</button>
+      <button class="toggle-btn harvest" id="seasonHarvest" data-season="harvest"><span class="toggle-dot"></span> Harvest</button>
+      <button class="toggle-btn winter" id="seasonWinter" data-season="winter"><span class="toggle-dot"></span> Winter</button>
+    </div>
+    <div class="toggle-row"><button class="toggle-btn" id="stormToggle" aria-pressed="false">Storm ailments</button></div>
+    <div class="tier-hint">No season active — rolling Core ailments only</div>
+  </div>
+  <div class="control-group" style="flex:1;min-width:200px">
+    <label>Active Tiers <span style="font-weight:400;text-transform:none;letter-spacing:0">(auto-set by rep, or override)</span></label>
+    <div class="tier-toggles" id="tierToggles">
+      <button class="tier-btn novice on" data-tier="novice">Novice</button>
+      <button class="tier-btn inter" data-tier="inter">Intermediate</button>
+      <button class="tier-btn advanced" data-tier="advanced">Advanced</button>
+      <button class="tier-btn expert" data-tier="expert">Expert</button>
+    </div>
+  </div>
+</div>
+
+<div class="patient-section">
+  <button class="patient-btn" id="patientBtn">🃏 Draw Patient</button>
+  <div id="patientCard" style="display:none"></div>
+</div>
+
+<button class="roll-btn" id="rollBtn">🎲 Roll Ailment</button>
+
+<div id="resultArea"></div>
+<div class="history-section" id="historySection" style="display:none">
+  <div class="history-label">Recent rolls</div>
+  <div class="history-list" id="historyList"></div>
+</div>
+
+<script>
+// ── AILMENT DATA ──
+// tags: array of {tag, stars} — stars from the book notation e.g. [WOUND★] = stars:1
+const CORE_AILMENTS = [
+  // ── NOVICE ──
+  { name:"Wounded",          tier:"novice", tags:[{t:"WOUND",s:1},{t:"PAIN",s:1}],                timer:6, desc:"An extremely common occurrence. Whether it be by accident or from a duel, bandit ambush, or beast attack, the afflicted has a serious wound.", consequence:"They are rushed to the village doctor. Lose 1 Reputation." },
+  { name:"Phodothropy",      tier:"novice", tags:[{t:"CURSE",s:1},{t:"HAIR",s:1}],                timer:6, desc:"During the full moon, the afflicted turns into a monstrous hamster and scurries around their home and village, nibbling on carts and walls.", consequence:"They go on another rampage. Lose 1 Reputation. Describe the aftermath." },
+  { name:"Druidic Madness",  tier:"novice", tags:[{t:"SENSES",s:1},{t:"MAGIC",s:1}],             timer:null, desc:"After spending too much time near active stone circles, the afflicted has become obsessed with creating standing circles everywhere, obstructing traffic and annoying family." },
+  { name:"Dragon Sickness",  tier:"novice", tags:[{t:"SENSES",s:1},{t:"WOUND",s:1}],             timer:4, desc:"Named after the champion hoarders themselves, the afflicted becomes obsessed with a type of object and tries to accrue the greatest hoard of it. Gold, cups, trading cards, etc.", consequence:"The afflicted steals 10 Silver and runs away." },
+  { name:"Yeti Chest",       tier:"novice", tags:[{t:"HAIR",s:1},{t:"LUNGS",s:1}],               timer:null, desc:"The afflicted's chest hair grows longer and thicker until it becomes a fur-like coating. They also speak with a much lower voice for some reason. Good in Winter though." },
+  { name:"Frogified",        tier:"novice", tags:[{t:"WART",s:1},{t:"POISON",s:1}],              timer:6, desc:"After some clever clog wrote a story about kissing a frog and getting a prince, witches have had to deal with a flood of hopeless romantics getting warty lips and poisoned.", consequence:"They're rushed to the village doctor. Lose 1 Reputation." },
+  { name:"Baker's Blisters", tier:"novice", tags:[{t:"BURN",s:1},{t:"PAIN",s:1}],                timer:null, desc:"Scalding hot sugar, time sensitive cakes, no oven gloves in sight, there's a reason bakers say their blood, sweat, and tears went into their pastries." },
+  { name:"Drunk",            tier:"novice", tags:[{t:"BLOOD",s:1},{t:"COLD",s:1},{t:"SENSES",s:2}], timer:8, desc:"Struck by a vampire, the afflicted has been drunk down to quite dangerous levels. On top of that, they keep leaving their window open at night now and have caught a cold.", consequence:"They run off with their vampiric lover. Write about how it goes for them and for you." },
+  { name:"Magnetic Thumb",   tier:"novice", tags:[{t:"PAIN",s:1},{t:"BLOOD",s:1}],               timer:null, desc:"Caused by having too much iron in one's diet, the afflicted's hands attract metal. Not so bad for painters, a death sentence for builders and bakers." },
+  { name:"Cludgie Mouth",    tier:"novice", tags:[{t:"CURSE",s:1},{t:"INFECTION",s:1}],          timer:6, desc:"A curse from a bog goblin, this poor soul's mouth reeks like a tavern privy. A single breath of theirs can empty a busy room.", consequence:"They go to the village doctor instead. Lose 1 Reputation." },
+  { name:"Hangover",         tier:"novice", tags:[{t:"POISON",s:1},{t:"STOMACH",s:1}],           timer:4, desc:"After a rowdy night of reckless abandon, the afflicted has crawled to you with a stomach full of poison, a mouth like a desert, and a head as fragile as a sparrow's egg.", consequence:"They get better and go off grumbling. Lose 1 Reputation." },
+  { name:"Toad Nose",        tier:"novice", tags:[{t:"WARTS",s:1},{t:"MOOD",s:1}],               timer:null, desc:"Used to be that they called it Witch's Nose. Thankfully enough people got turned into pigs for them to change it. Essentially just a wart, the afflicted might have more if unlucky." },
+  { name:"Pollen Pox",       tier:"novice", tags:[{t:"RASH",s:1},{t:"COUGH",s:1}],               timer:null, desc:"Travellers from the cities often find that after spending a day in Glimmerwood Grove they're suddenly itchy and sneezing. It's always allergies." },
+
+  // ── INTERMEDIATE ──
+  { name:"Adventurer's Rash",    tier:"inter", tags:[{t:"RASH",s:1},{t:"SENSES",s:1}],           timer:4, desc:"A common ailment for farmhands and apprentices. After coming into contact with a carrier, the afflicted gets an itching in their feet and a (hopefully benign) twinkle in their eye.", consequence:"They've set off on an epic quest. What was their goal? Do you think they'll manage it? Lose 1 Reputation." },
+  { name:"Fae Wind",             tier:"inter", tags:[{t:"CURSE",s:1},{t:"MOOD",s:2}],             timer:null, desc:"A favourite among certain fairies, the afflicted has been cursed so that their flatulence sounds like laughter or music. Physically harmless but very embarrassing to some." },
+  { name:"Dwarven Lung",         tier:"inter", tags:[{t:"COUGH",s:1},{t:"LUNGS",s:2}],            timer:null, desc:"A misnomer as dwarves are naturally immune, the afflicted has inhaled too much coal and stone dust and has developed a chesty cough." },
+  { name:"Restless Bones",       tier:"inter", tags:[{t:"MAGIC",s:2},{t:"BONES",s:1}],            timer:null, desc:"Usually caught from necromantic ritual sites, this disease causes the afflicted's skeleton to try to escape. Thankfully they aren't good at it so this mostly causes a tingling feeling." },
+  { name:"Loss of Experience",   tier:"inter", tags:[{t:"MOOD",s:2},{t:"MAGIC",s:1}],             timer:4, desc:"Mostly a concern for adventurers, the afflicted feels sluggish and morose, as if they have lost a measure of their essence and are no longer good at things they once were.", consequence:"They get frustrated and smash up your house. Lose 1 Upgrade." },
+  { name:"Sailor's Step",        tier:"inter", tags:[{t:"INFECTION",s:1},{t:"EAR",s:1}],          timer:4, desc:"An inner ear infection that causes the afflicted to feel like they're on a galleon in a storm.", consequence:"They trip over and hurt themselves. If you can treat a [WOUND] right now, lose 1 Reputation. If you can't, lose 2 Reputation." },
+  { name:"Potion Poison",        tier:"inter", tags:[{t:"MAGIC",s:1},{t:"POISON",s:2}],           timer:4, desc:"The afflicted figured they would trust the fast-talking merchant with the miracle cure rather than come to you, now they've gone green and their vomit just ran away.", consequence:"A strange magical effect happens. Describe it and lose 2 Reputation." },
+  { name:"Hover Hives",          tier:"inter", tags:[{t:"SKIN",s:2},{t:"PAIN",s:1}],              timer:6, desc:"A dangerous ailment to those with less than solid roofs, tiny hives have appeared all over the afflicted that cause them to float. The more hives, the stronger the lift.", consequence:"They float off into the sky and the Balloonist has to go fetch them. Lose 1 Reputation." },
+  { name:"Ventriloquist Cough",  tier:"inter", tags:[{t:"MAGIC",s:1},{t:"COUGH",s:2}],            timer:4, desc:"A rare ailment that sees the poor afflicted coughing someone else's cough. They make the motions, ending up with a sore throat and dry mouth. Worst though is the thrown sound.", consequence:"The puppet master gets over their cold and the afflicted goes home to lie down. Lose 2 Reputation." },
+  { name:"A Terrible Fright",    tier:"inter", tags:[{t:"HAIR",s:1},{t:"PAIN",s:1},{t:"MOOD",s:2}], timer:6, desc:"The afflicted has seen something so horrifying, so unbelievably scary that their hair has turned white and they've torn their throat from screaming.", consequence:"They run off screaming. Are they ever found? Lose 1 Reputation." },
+  { name:"Silver Burn",          tier:"inter", tags:[{t:"CURSE",s:2},{t:"BURN",s:2}],             timer:null, desc:"Silver is an irritant to more than just the stereotypical werewolf. The afflicted may have a form of lycanthropy, vampirism, or even a form of Giver's Disease." },
+  { name:"Tongue Stung",         tier:"inter", tags:[{t:"MOUTH",s:1},{t:"BOILS",s:2},{t:"PAIN",s:2}], timer:null, desc:"The recent trend in 'organic' foods has led some clever clogs, the afflicted included, to try get their honey straight from the hive." },
+  { name:"Bard Boils",           tier:"inter", tags:[{t:"BOILS",s:2},{t:"PAIN",s:1}],             timer:4, desc:"Look, you have a duty of care to all who come to you, even if the affliction is unseemly. Witch Elders also recommend smacking the bard responsible with an oak spoon.", consequence:"They get embarrassed and run off home to pretend this never happened. Lose 1 Reputation." },
+
+  // ── ADVANCED ──
+  { name:"Spore Breath",         tier:"advanced", tags:[{t:"PARASITE",s:2},{t:"LUNGS",s:2},{t:"MOUTH",s:2}], timer:6, desc:"The afflicted has eaten a mushroom that they really shouldn't have. Now, when they breathe, the spores are released in a noxious cloud.", consequence:"They've infected everyone else in the village forcing other witches to get involved. Lose 3 Reputation." },
+  { name:"Giver's Disease",      tier:"advanced", tags:[{t:"SENSES",s:3},{t:"HOT",s:1},{t:"BURN",s:2}],       timer:6, desc:"The afflicted has become allergic to material possessions and has started giving away all of their worldly goods. If left untreated, leads to hypothermia, starvation, and boredom.", consequence:"You took too long and they gave away everything. Lose 2 Reputation." },
+  { name:"Candlesick",           tier:"advanced", tags:[{t:"EAR",s:2},{t:"BURN",s:1},{t:"HOT",s:2}],          timer:6, desc:"A nasty disease that causes the afflicted to produce half their weight in earwax each day. Burns go hand in hand with this affliction.", consequence:"One of their earwax piles catches fire and burns something. What was it? Lose 2 Reputation." },
+  { name:"Shattered Tooth",      tier:"advanced", tags:[{t:"PAIN",s:3},{t:"TEETH",s:1},{t:"INFECTION",s:2}],  timer:6, desc:"A fall, a punch, trying to open a tin with their teeth, the people of High Rannoc seem to be researching all the possible ways to break one's teeth. The afflicted is just the latest.", consequence:"They go to the village doctor instead. Lose 2 Reputation." },
+  { name:"Thunder Struck",       tier:"advanced", tags:[{t:"PAIN",s:2},{t:"NERVES",s:2},{t:"BURN",s:2}],      timer:6, desc:"Sometimes the gods just get angry at certain people. Other times they were foolish enough to wear plate mail in a thunderstorm atop a mountain. Either way they're in agony.", consequence:"They pass on from their injuries. What were their last words? Lose 4 Reputation." },
+  { name:"Partial Petrification",tier:"advanced", tags:[{t:"MAGIC",s:2},{t:"SKIN",s:2},{t:"NERVES",s:2}],     timer:6, desc:"Cursed object, gorgon's gaze, or a spell gone wrong, whatever the cause, a portion of the afflicted is uncomfortably petrified.", consequence:"The petrified portion breaks off. What do they do with it? How does this affect them? Lose 2 Reputation." },
+  { name:"Phantom Limb",         tier:"advanced", tags:[{t:"SPIRIT",s:3},{t:"SLEEP",s:2}],                    timer:6, desc:"A genetic disorder that affects those with The Gift. The afflicted sprouts the ghostly limb of a deceased relative that they have no control over.", consequence:"They learn to live with it, as much as it annoys other people. Lose 3 Reputation." },
+  { name:"Reader's Digestion",   tier:"advanced", tags:[{t:"STOMACH",s:3},{t:"DEHYDRATION",s:2}],             timer:6, desc:"Primarily the bane of student scholars using a 'digest knowledge' spell incorrectly, this ailment is characterised by word vomit, indigestion, and dehydration.", consequence:"They write and publish a report on why you suck. Write an excerpt from that report in your journal. Lose 2 Reputation." },
+  { name:"Fairy Fever",          tier:"advanced", tags:[{t:"SENSES",s:3},{t:"COLD",s:2},{t:"BONES",s:1}],     timer:8, sweet:3, desc:"Makes the afflicted believe they are a fairy. Usually accompanied by hypothermia and broken legs from the scant clothing and belief they can fly.", consequence:"They escape from the village doctor and run off with the fairies. Are they happy? What is life like for them now? Lose 2 Reputation." },
+  { name:"Ashy Foot",            tier:"advanced", tags:[{t:"CURSE",s:2},{t:"RASH",s:2},{t:"BURN",s:2}],       timer:4, poison:2, desc:"Thanks to a partial demonic possession, the afflicted's feet take on an ashy texture, becoming very dry and sore, especially when they walk on hallowed ground.", consequence:"Their foot draws a sigil and summons the demon to our world. How does the demon get on? What does it have planned? Lose 1 Reputation." },
+  { name:"Liar's Lips",          tier:"advanced", tags:[{t:"PAIN",s:1},{t:"MOUTH",s:3},{t:"CURSE",s:3}],      timer:4, desc:"A fae curse, the afflicted is either unable to tell the truth or only able to tell the truth, often with hilarious results... at least for those watching.", consequence:"An unfortunate lie or a harsh truth — what did they say to cause such a commotion? Lose 2 Reputation." },
+  { name:"Diver's Fee",          tier:"advanced", tags:[{t:"PAIN",s:1},{t:"BLOOD",s:2},{t:"NERVES",s:2},{t:"STOMACH",s:2}], timer:null, desc:"A common ailment among divers who have come up too quickly. Bubbles of gas form in the blood and play all sorts of havoc with the body. Take your time when diving." },
+  { name:"Grumbly Tums",         tier:"advanced", tags:[{t:"SPIRIT",s:3},{t:"STOMACH",s:2},{t:"SLEEP",s:1}],  timer:8, desc:"A side-effect of accidentally eating a ghost is that the dearly departed sits in the afflicted's stomach and complains, causing stomach irritation and insomnia. Doubly so if its a poultry-geist.", consequence:"They manage to get the ghost out... in your bathroom. Describe the ghost. What do they do to haunt you? Lose 2 Reputation." },
+
+  // ── EXPERT ──
+  { name:"Wrong Form",           tier:"expert", tags:[{t:"MAGIC",s:3},{t:"MOOD",s:2},{t:"HAIR",s:1},{t:"SKIN",s:1}], timer:null, desc:"A spell gone wrong, a curse, or even just a general feeling of dysphoria, the afflicted wants to change their body to reflect their true self." },
+  { name:"Botched Resurrection", tier:"expert", tags:[{t:"GHOUL",s:3},{t:"CURSE",s:3},{t:"WOUND",s:3},{t:"COLD",s:2}], timer:6, desc:"The afflicted recently passed on, only to have their soul brought back from the great beyond. However, as is usually the case, they're more of an animated corpse than them.", consequence:"You aren't able to bring them back properly and have to put the corpse down. Write something about this experience. Lose 3 Reputation." },
+  { name:"Hearth Heart",         tier:"expert", tags:[{t:"SENSES",s:3},{t:"HOT",s:3},{t:"DEHYDRATION",s:3}],  timer:6, desc:"The afflicted has such a tremendous fever its as if a fire's burning in their chest. Annoyingly it also makes them want to hug friends, family, and strangers.", consequence:"Everyone gets sick. You can't visit the Village during the next Ailment. Lose 4 Reputation." },
+  { name:"Dragon Mouth",         tier:"expert", tags:[{t:"MOUTH",s:1},{t:"HOT",s:1},{t:"DEHYDRATION",s:3},{t:"MAGIC",s:1}], timer:6, desc:"Scaly lips and a burning hot tongue that evaporates almost everything they drink, this ailment tends to come from curses or the mucus of a sick dragon.", consequence:"This one's fatal. Left too long they passed on. Write something about this moment and lose 4 Reputation." },
+  { name:"Clock Shock",          tier:"expert", tags:[{t:"TIME",s:2},{t:"MAGIC",s:3},{t:"MOOD",s:1}],         timer:6, sweet:3, desc:"A side-effect to an anti-ageing cream, a dip in the Fountain of Youth, or a spell gone wrong. Whatever the cause, the afflicted is ageing in reverse.", consequence:"They de-age past their birth and disappear. Write something about this experience and lose 8 Reputation." },
+  { name:"Banshee's Blessing",   tier:"expert", tags:[{t:"EAR",s:1},{t:"BLOOD",s:3},{t:"MOOD",s:3},{t:"MAGIC",s:1}], timer:6, desc:"A wrong number situation, the afflicted has heard a banshee's wail. Their blood is running cold and they are sick with fright...they may also have a bit of hearing loss.", consequence:"The link wasn't severed in time and they shared the fate of the banshee's target. Lose 8 Reputation." },
+  { name:"Temporal Hiccups",     tier:"expert", tags:[{t:"MAGIC",s:3},{t:"PAIN",s:2},{t:"TIME",s:3},{t:"STOMACH",s:2}], timer:6, desc:"A very frustrating ailment that causes the afflicted to randomly jump backwards or forwards in time, leading to a collection of bruises.", consequence:"They hiccup away to some other period of history. You find mention of them in a history book, what does it say? Lose 4 Reputation." },
+  { name:"Saturday Night Fever", tier:"expert", tags:[{t:"FEET",s:1},{t:"PAIN",s:3},{t:"NERVES",s:2},{t:"HOT",s:1}],  timer:6, desc:"A full body nerve dysfunction that makes it look like the afflicted is dancing... albeit terribly. Exhaustion, embarrassment, and aching feet are common.", consequence:"A passing bard notices their moves and gives them a future in show business. What happens to them? Lose 4 Reputation." },
+  { name:"Vampirism",            tier:"expert", tags:[{t:"BURN",s:1},{t:"BLOOD",s:3},{t:"CURSE",s:3}],        timer:6, desc:"While quite content with the immortality and unholy powers, the afflicted has work in the morning and can't afford a good cape anyway.", consequence:"They warm up to the idea, so to speak and decide to stay as a vampire. What do they get up to that gets you in bother? Lose 4 Reputation." },
+  { name:"Astral Rejection",     tier:"expert", tags:[{t:"SPIRIT",s:3},{t:"MAGIC",s:2},{t:"SENSES",s:2},{t:"BLOOD",s:1}], timer:6, desc:"Leaving one's body to travel through the astral plane is quite the feat of magic and spirituality. Sadly, the spirit can change so much that the body rejects it.", consequence:"Their spirit cannot rejoin their body so they stick around. What are they like? Is this a haunting or a house-mate scenario? Lose 2 Reputation." },
+  { name:"Portal Pinch",         tier:"expert", tags:[{t:"WOUND",s:1},{t:"INFECTION",s:2},{t:"MAGIC",s:2},{t:"PAIN",s:3}], timer:6, desc:"The afflicted has been thinking with portals and thanks to a bit of botched math they've gotten a limb stuck in one realm while the rest of them is here.", consequence:"Something gets the limb. For a brief moment you got to see a whole new realm. Describe it. Lose 2 Reputation." },
+  { name:"Ghoul Gnawed",         tier:"expert", tags:[{t:"WOUND",s:2},{t:"GHOUL",s:3},{t:"BLOOD",s:3}],       timer:6, desc:"Common among adventurers, tomb raiders, and grave diggers, the afflicted has been bitten by a ghoul and will, if not treated, turn into one once the disease reaches the brain.", consequence:"They bite someone. Start another Ghoul Gnawed potion. If you fail it again, the whole village gets bitten. Describe how you escape the localised ghoul apocalypse and how it all gets sorted out. Lose 15 Reputation." },
+  { name:"Double Trouble",       tier:"expert", tags:[],                                                        timer:null, desc:"The afflicted has had the unfortunate luck of catching two things at once. Draw two Advanced Ailments to see what they've got.", consequence:"Draw two Advanced Ailments." },
+];
+
+const NIGHTFALL_AILMENTS = [
+  // ── NOVICE ──
+  { name:"Restless Leg",    tier:"novice",   tags:[{t:"FEET",s:1},{t:"NERVES",s:1}],                               timer:null, desc:"A not uncommon affliction, this patient struggles to get to sleep at night as their leg jostles wildly and often kicks out, waking them and their partner." },
+  { name:"Stub Toe",        tier:"novice",   tags:[{t:"PAIN",s:2},{t:"FEET",s:1}],                                timer:6,    desc:"Not to be trivialised as a simple stubbed toe, this poor bugger has stubbed their toe so hard it's shorter than the other.", consequence:"They visit the village doctor instead and can't walk for a month. Lose 1 Reputation." },
+  { name:"Insomnia",        tier:"novice",   tags:[{t:"SLEEP",s:2},{t:"MOOD",s:1}],                               timer:8,    desc:"There is little worse than getting no sleep as this patient has discovered. Each night they grow more tired and irritable but sleep remains elusive.", consequence:"They get terribly grouchy and snap out at someone and say something utterly horrid. What do they say? Who do they say it to? Lose 1 Reputation." },
+  { name:"Ill Chill",       tier:"novice",   tags:[{t:"COLD",s:2},{t:"COUGH",s:1}],                               timer:6,    desc:"This poor sod went wandering too late and got stuck out all night, now they've developed a nasty cough and are chilled to the bone.", consequence:"They try a home remedy instead. What nonsense do they try? What happens? Lose 1 Reputation either way." },
+  { name:"Star Struck",     tier:"novice",   tags:[{t:"SENSES",s:1},{t:"WOUND",s:1}],                              timer:6,    desc:"This unlucky stargazer was looking at the wrong spot at the wrong time and got hit by a piece of falling space rock.", consequence:"They develop a deep mistrust of space and refuse to go out at night. Lose 1 Reputation." },
+
+  // ── INTERMEDIATE ──
+  { name:"Empty Rest",      tier:"inter",    tags:[{t:"DREAM",s:2},{t:"SLEEP",s:2},{t:"MOOD",s:1}],               timer:6,    desc:"To pass every night with no company except the inky blackness of unconsciousness is a terrible fate and is exactly what this patient is suffering from.", consequence:"With no dreams, the patient ends up becoming terribly boring and lacks all creativity. How does this affect them? Lose 2 Reputation." },
+  { name:"Snoremancy",      tier:"inter",    tags:[{t:"MOUTH",s:2},{t:"MAGIC",s:2},{t:"SLEEP",s:2}],              timer:6,    desc:"People often complain that their partners snore loud enough to wake the dead. Well that's exactly what this patient's necromantic nighttime noises do.", consequence:"A recently deceased villager is brought back as a zombie. How do you help this reluctant ressurectant? Lose 2 Reputation." },
+  { name:"Over-Tipsy",      tier:"inter",    tags:[{t:"SENSES",s:2},{t:"POISON",s:2}],                            timer:4,    desc:"This patient has had just a tad too much to drink and has become a nuisance to themself and others. For the sake of all involved, sober them up.", consequence:"They pass out in your cottage and wake up with a Hangover. If you don't cure them of this Ailment during your Downtime, lose 1 Reputation." },
+  { name:"Brawled Out",     tier:"inter",    tags:[{t:"WOUND",s:2},{t:"PAIN",s:2}],                               timer:4,    desc:"Adventurers have a nasty habit of celebrating their quests by drinking to excess and fighting each other like the well adjusted individuals they are.", consequence:"They get left behind by their adventuring party and have to spend time at your cottage while they heal. Draw a card; they stay with you for that many weeks." },
+  { name:"Night Owl",       tier:"inter",    tags:[{t:"SENSES",s:2},{t:"SLEEP",s:2},{t:"STOMACH",s:1}],           timer:8,    desc:"This patient has lost grip of their senses and now, when night falls, can be found hanging around in trees and hooting.", consequence:"They commit too fully to the belief that they are an owl and try to fly with painful results. Did they survive? Lose 2 Reputation." },
+
+  // ── ADVANCED ──
+  { name:"Fright Light",    tier:"advanced", tags:[{t:"MAGIC",s:3},{t:"GHOUL",s:3},{t:"SPIRIT",s:3}],             timer:8,    desc:"This patient has such an intense fear of the dark that they've become a beacon to all the things that go bump in the night.", consequence:"Something gets them in the night. What was it? What clues do you find? Lose 4 Reputation." },
+  { name:"Sleep Lost",      tier:"advanced", tags:[{t:"SLEEP",s:3},{t:"SENSES",s:3}],                             timer:10,   desc:"Sleepwalking can be troublesome enough on its own but this unfortunate sod has managed to sleepwalk out of the village entirely.", consequence:"Lost in their sleep, they aren't heard from again. What rumours spread about them? Lose 4 Reputation." },
+  { name:"Midnight's Toll", tier:"advanced", tags:[{t:"CURSE",s:3},{t:"SKIN",s:3},{t:"SPIRIT",s:2}],             timer:6,    desc:"By the wicked hands of a cruel witch or a malicious fae the afflicted has been cursed so that they become a terrible sight to behold upon the stroke of midnight till the dawning of the sun.", consequence:"The spell takes a firm hold and cannot be broken by your potions. Lose 3 Reputation." },
+  { name:"Sunburn",         tier:"advanced", tags:[{t:"BURN",s:3},{t:"HOT",s:2},{t:"GHOUL",s:3}],                timer:4,    desc:"Not the beach variety but the vampiric kind. This poor soul was out too early.", consequence:"They have to retreat to their lair and grow moody. You cannot visit Hero's Hollow during your next Forage." },
+  { name:"Light Hearted",   tier:"advanced", tags:[{t:"SENSES",s:3},{t:"BURN",s:3},{t:"SKIN",s:3}],              timer:6,    desc:"The afflicted has developed a moth-like obsession with lights and has been burnt.", consequence:"The village doctor takes them in for the long healing process. What help does the doctor ask for over the coming weeks? Lose 3 Reputation." },
+
+  // ── EXPERT ──
+  { name:"The Were Curse",       tier:"expert", tags:[{t:"CURSE",s:3},{t:"MAGIC",s:3},{t:"SKIN",s:3}],                       timer:8,  desc:"Lycanthropy might be the most famous but it is by no means the only -thropy out there. This patient has been bitten by something that carried the curse and now turns into a were-something each night.", consequence:"The curse is given too much time and is now incurable. How do they live with their new curse? Lose 4 Reputation." },
+  { name:"Dreamstate",           tier:"expert", tags:[{t:"DREAM",s:3},{t:"MAGIC",s:3},{t:"SENSES",s:3},{t:"MOOD",s:3}],     timer:8,  desc:"The afflicted is having a contagious dream that is slowly but surely spreading to everyone in the village. I hope for your sake that it's not the dream with the feet.", consequence:"You and everyone else in the village are pulled into the shared dream. Draw a card to see how many weeks it lasts. Lose 4 Reputation." },
+  { name:"Unstable Nightmares",  tier:"expert", tags:[{t:"SLEEP",s:3},{t:"MAGIC",s:3},{t:"MOOD",s:3}],                       timer:13, desc:"Horrific creations are conjured from the afflicted's unending nightmares to terrorise the entire village. Worse still, they protect their unwitting creator.", consequence:"The Nightmares steal their creator away into the night. What foul tidings do you hear about them? Lose 6 Reputation." },
+  { name:"Star Sighted",         tier:"expert", tags:[{t:"CURSE",s:3},{t:"SENSES",s:3},{t:"COLD",s:3}],                      timer:8,  desc:"The afflicted lives in perpetual night, unable to see or feel the sun. While this makes for excellent stargazing, it leaves them pale, cold, and miserable.", consequence:"They see something that hides behind the sun that terrifies them into becoming a hermit. What do they describe? Lose 5 Reputation." },
+];
+
+// ── DANCE OF SEASONS AILMENTS ──
+// Each ailment has a 'season' field. Spring/Summer have tier levels; Harvest/Winter same.
+// Spring: Novice, Intermediate, Advanced/Expert
+// Summer: Novice, Intermediate, Advanced, Expert
+// Harvest: Novice, Intermediate, Advanced, Expert
+// Winter: Novice, Intermediate, Advanced, Expert
+const DANCE_AILMENTS = {
+  spring: [
+    { name:"Cleaning Frenzy", season:"spring", tier:"novice",   tags:[{t:"MIND",s:1},{t:"LUNGS",s:1}],                        timer:null, desc:"This person has gone to a whole new level with their spring cleaning and is actually dismantling their home bit by bit. Best watch their pets during this time…", consequence:"They clean themselves right out of a home and need to move in with a family member or friend. Lose 1 Reputation." },
+    { name:"Flowering",       season:"spring", tier:"inter",    tags:[{t:"CURSE",s:2},{t:"HAIR",s:1}],                        timer:6,    desc:"For some reason, this patient has started to grow flowers where they should be growing hair.", consequence:"The curse spreads and now they are a full blown dryad. Lose 1 Reputation and Plant Reagents have their Foraging Value Increased by 3 for the rest of the year." },
+    { name:"New Year, New Me",season:"spring", tier:"advanced", tags:[{t:"CURSE",s:3},{t:"MAGIC",s:3},{t:"SENSES",s:3}],      timer:8,    desc:"Some magical being has taken the old phrase literally and cursed this person to become someone new. Curing them may be considered killing the new person…", consequence:"They continue living as this new person. What effects does this have on their loved ones? What do they do with this new life?" },
+  ],
+  summer: [
+    { name:"Beach Body",         season:"summer", tier:"novice",   tags:[{t:"CURSE",s:2},{t:"SKIN",s:1}],                           timer:12, desc:"Another one who made a deal with the mad sea witch for a 'beach body' and ended up part crab or lobster or some other horrible thing. Easily cured, thankfully.", consequence:"They disappear into the loch or sea. You see them sometimes. How are they getting on? Lose 1 Reputation." },
+    { name:"Festival Fatigue",   season:"summer", tier:"inter",    tags:[{t:"FEET",s:2},{t:"MOOD",s:2},{t:"SENSES",s:2}],           timer:8,  desc:"This patient has been at loads of festivals recently is finding it hard to keep up.", consequence:"They don't go to the next festival on their list and there are serious social consequences for them. What happens? Lose 1 Reputation." },
+    { name:"Paint-ful Condition",season:"summer", tier:"advanced", tags:[{t:"SKIN",s:3},{t:"PAIN",s:2},{t:"RASH",s:2}],             timer:6,  desc:"Some elves from the Summer Court have painted this poor sod with exceptionally bright paint which they're allergic to!", consequence:"The elves find them and take them away for more partying. Lose 3 Reputation." },
+    { name:"Sunny Complexion",   season:"summer", tier:"expert",   tags:[{t:"SKIN",s:3},{t:"MAGIC",s:3},{t:"SENSES",s:3}],          timer:6,  desc:"The afflicted's face glows like the sun, making them very difficult to look at.", consequence:"The patient's sun-like face blinds another villager! They are sent away to find a cure elsewhere. Lose 3 Reputation." },
+  ],
+  harvest: [
+    { name:"Blasted",     season:"harvest", tier:"novice",   tags:[{t:"BURN",s:1},{t:"WOUND",s:1}],                               timer:6, desc:"Unfortunately this person got a bit too close to the fireworks display and got a nasty burn. If it was their fault, give 'em some grief for playin' with bombs!", consequence:"If not cured in time, the Doctor is forced to make a non-magical solution leaving them with permanent scars. Lose 1 Reputation." },
+    { name:"Harvested",   season:"harvest", tier:"inter",    tags:[{t:"SPIRIT",s:2},{t:"WOUND",s:2}],                             timer:4, desc:"A malicious spirit tried to pull this patient's soul out of their body! No doubt they'll be back soon to finish taking in their fell harvest.", consequence:"You were too slow. The spirit has left a taunting message for you. What does it say? Who or what is this spirit? Lose 2 Reputation." },
+    { name:"Shocked",     season:"harvest", tier:"advanced", tags:[{t:"NERVES",s:3},{t:"PAIN",s:3}],                              timer:6, desc:"This patient found themselves on the wrong side of an angry storam and now little sparks are shooting out of them at random. Ouch.", extra:"You need to brew two doses as you will get Shocked while curing them.", consequence:"They pass on due to the damage. The electricity destroys one of your Upgrades. Lose 2 Reputation." },
+    { name:"Hollow Head", season:"harvest", tier:"expert",   tags:[{t:"CURSE",s:3},{t:"MAGIC",s:3},{t:"SPIRIT",s:3}],             timer:8, desc:"This patient had their head replaced with an enchanted vegetable and has been made to wander the earth looking for their lost head for all eternity.", extra:"You can look for their Lost Head (15) in any Locale. You cannot cure the Ailment without finding the Lost Head.", consequence:"They thank you for your help and depart. Do you think they'll ever find their head?" },
+  ],
+  winter: [
+    { name:"Festive Fever",   season:"winter", tier:"novice",   tags:[{t:"MIND",s:2},{t:"MAGIC",s:1}],                            timer:10, desc:"This patient is showing all the hallmark signs of believing that true love and the magic of the holidays will solve all their problems. Best cure them quick.", consequence:"They spread the fever to the rest of the town. The villagers are sickeningly festive for the rest of the Season. How do you cope?" },
+    { name:"Holiday Haunted", season:"winter", tier:"inter",    tags:[{t:"SPIRIT",s:3},{t:"MOOD",s:1}],                           timer:6,  desc:"For some reason, this patient keeps seeing ghosts with strange warnings to change their ways.", consequence:"They change their ways. How do they change? Draw a Card: ♥ – Gain 3 Reputation. ♦♠♣ – Lose 1 Reputation." },
+    { name:"Brain-freeze",    season:"winter", tier:"advanced", tags:[{t:"MIND",s:3},{t:"COLD",s:3},{t:"PAIN",s:3}],             timer:4,  desc:"The afflicted ate something too cold and is paying the price. If not cured quickly, who knows what will happen?!", consequence:"Their mind has frozen completely and put them in a coma. Lose 2 Reputation. Who looks after them now?" },
+    { name:"Humbugged",       season:"winter", tier:"expert",   tags:[{t:"MOOD",s:3},{t:"COLD",s:3},{t:"HAIR",s:3}],             timer:6,  desc:"It seems that this patient's distaste for the holiday is spreading and sucking the joy and colour out of everyone! They must have humbugs!", consequence:"No-one cares about the holidays this year. There is no Winter Festival. What do people do instead?" },
+  ],
+};
+
+// ── REAGENT DATA (for coverage display) ──
+const REAGENTS = [
+  { name:"Scramble Bramble", effects:"CRUSHED→BOILED [MOOD][SENSES]" },
+  { name:"Shieldcap", effects:"CRUSHED [TEETH][BONES] · RAW [TEETH]" },
+  { name:"Foot Fungus", effects:"BOILED [BURN][BOILS][RASH]" },
+  { name:"Wild Rose", effects:"CRUSHED [BONES][SKIN]" },
+  { name:"Surgeon Sap", effects:"RAW [WOUND][BURN]" },
+  { name:"Songberries", effects:"CRUSHED [MOOD]" },
+  { name:"Coffee Cap", effects:"CRUSHED→BOILED [SENSES]" },
+  { name:"Cynic Ivy", effects:"BOILED [SENSES][MAGIC]" },
+  { name:"Moon Lotus", effects:"RAW [BURN][HOT][SKIN][RASH]" },
+  { name:"Jumpkin", effects:"BOILED [STOMACH] · CRUSHED [COLD]" },
+  { name:"Gas Weed", effects:"CRUSHED [LUNGS]" },
+  { name:"Deep Reed", effects:"CRUSHED [EAR][BLOOD][STOMACH]" },
+  { name:"Mermaid's Gift", effects:"BOILED [HAIR]" },
+  { name:"Glacier Moss", effects:"CRUSHED [DEHYDRATION][LUNGS]" },
+  { name:"Moon Moss", effects:"CRUSHED [BLOOD][CURSE]" },
+  { name:"Skullcap", effects:"CRUSHED [POISON] · BOILED [PAIN]" },
+  { name:"Silverleaf", effects:"CRUSHED [INFECTION][RASH]" },
+  { name:"Flood Bulb", effects:"CRUSHED [DEHYDRATION][POISON]" },
+  { name:"Hiker's Helper", effects:"BOILED [PAIN]" },
+  { name:"Nightcap", effects:"RAW [SLEEP][DREAM]" },
+  { name:"Deathweeds", effects:"BOILED [WARTS][RASH]" },
+  { name:"Princess Toad", effects:"BOILED [WART][RASH] · CRUSHED [MOOD]" },
+  { name:"Hair of Boar", effects:"CRUSHED [COUGH][LUNGS]" },
+  { name:"Amethyst Antlers", effects:"CRUSHED [MAGIC][CURSE][MOOD]" },
+  { name:"Rat Spit", effects:"BOILED [TEETH]" },
+  { name:"Golden Scale Guppy", effects:"BOILED [BLOOD]" },
+  { name:"Shock Fish", effects:"BOILED [NERVES][PAIN] · DISTILLED [BOILS]" },
+  { name:"Shadow Shark", effects:"RAW [RASH][BURN] · DISTILLED [PAIN]" },
+  { name:"Slime Shell", effects:"RAW [PARASITE][INFECTION][BLOOD]" },
+  { name:"Smooth Croak", effects:"BOILED [WARTS] · DISTILLED [SKIN]" },
+  { name:"Dentist Crab", effects:"RAW [TEETH][MOUTH][LUNGS] · DISTILLED [INFECTION]" },
+  { name:"Wigfish", effects:"RAW [MOOD][SLEEP][HAIR]" },
+  { name:"Sea Beast's Saliva", effects:"BOILED [WOUND][PAIN] · DISTILLED [BLOOD][NERVES][SENSES]" },
+  { name:"Gull-Drake Guano", effects:"CRUSHED→BOILED [COUGH][LUNGS]" },
+  { name:"Nimbus Fish", effects:"CRUSHED [MOUTH][FEET][INFECTION]" },
+  { name:"Ambergris", effects:"CRUSHED [SENSES][COLD][PAIN]" },
+  { name:"Nest Scraps", effects:"CRUSHED [COLD] · BOILED [HOT]" },
+  { name:"Salamander Urine", effects:"BOILED [HOT] · RAW [COLD]" },
+  { name:"Hermit Snail", effects:"BOILED [WOUND] · CRUSHED [BONES]" },
+  { name:"Giant Spider Venom", effects:"DISTILLED [PAIN][NERVES]" },
+  { name:"Vampire Venom", effects:"DISTILLED [CURSE] · RAW [PAIN][MOOD]" },
+  { name:"Mummified Remains", effects:"CRUSHED [SPIRIT]" },
+  { name:"Unicorn Powder", effects:"RAW [INFECTION]" },
+  { name:"Moth Dust", effects:"RAW [POISON] · Removes 1 Poison point" },
+  { name:"Dragon Moth Dust", effects:"RAW [POISON][CURSE] · Removes all Poison" },
+  { name:"Claw Coral", effects:"CRUSHED [BONES]" },
+  { name:"Otter Snotter", effects:"BOILED [COUGH]" },
+  { name:"Fairy Dust", effects:"RAW [MOOD][CURSE]" },
+  { name:"Glittersnow", effects:"RAW [CURSE][MAGIC]" },
+  { name:"A Snake's Promise", effects:"RAW [SPIRIT][GHOUL]" },
+  { name:"Whisper of a Cat", effects:"RAW [PARASITE][SLEEP]" },
+  { name:"Driftwood Memories", effects:"RAW [MOOD][SENSES] · DISTILLED [TIME]" },
+  { name:"Fossil Fish", effects:"CRUSHED [TIME][MAGIC]" },
+  { name:"Siren Song", effects:"DISTILLED [CURSE][EAR]" },
+  { name:"Milkstone", effects:"BOILED [TEETH][PAIN]" },
+  { name:"Star Shard", effects:"CRUSHED [MAGIC][CURSE]" },
+  { name:"Pixie Fur", effects:"CRUSHED [RASH]" },
+  { name:"A Goat's Echo", effects:"RAW [LUNGS] · DISTILLED [MOOD]" },
+  { name:"An Innocent's Suffering", effects:"RAW [PAIN][SLEEP][NERVES][WOUND]" },
+  { name:"Crow Coal", effects:"CRUSHED [DEHYDRATION][STOMACH][POISON]" },
+  { name:"Liquid Fire", effects:"RAW [PARASITES][INFECTION]" },
+  { name:"Skeleton Dust", effects:"CRUSHED [TEETH][BONES][HAIR]" },
+  { name:"Old Blood", effects:"BOILED [CURSE][RASH]" },
+  { name:"Basilisk's Gaze", effects:"RAW [WARTS][BOILS] · DISTILLED [TIME]" },
+  { name:"Darkwater", effects:"RAW [COUGH][HOT][MAGIC] · CAUSES [SLEEP]" },
+  { name:"Ghost Goo", effects:"BOILED [SPIRIT][CURSE]" },
+  { name:"Coldrust", effects:"CRUSHED [HOT][MAGIC]" },
+  { name:"Wisp Fire", effects:"RAW [SENSES]" },
+  { name:"Dryad Sap", effects:"BOILED [WOUND][PAIN]" },
+  { name:"Ghostly Grog", effects:"BOILED [GHOUL][SPIRIT]" },
+  { name:"Ghost Light", effects:"DISTILLED [SPIRIT]" },
+  { name:"Pressure Bubble", effects:"RAW [EAR][BLOOD]" },
+  { name:"Night Quartz", effects:"CRUSHED [MOOD]" },
+  { name:"Dreamwater", effects:"DISTILLED [DREAM]" },
+  { name:"Vampiric Supplement", effects:"RAW [BLOOD]" },
+  { name:"Trap Oil", effects:"BOILED [BONES][EAR]" },
+  { name:"Foul Incense", effects:"[SENSES]" },
+  { name:"Twisted Poison", effects:"DISTILLED [POISON][STOMACH]" },
+  { name:"Bumble Honey", effects:"RAW [STOMACH][THROAT]" },
+  { name:"Mason Honey", effects:"RAW [TEETH] or [BONES]" },
+  { name:"Mountain Dewe Water", effects:"BOILED [DEHYDRATION][SKIN]" },
+  { name:"Technicolour Slime", effects:"DISTILLED [MAGIC]" },
+  { name:"Strange Substance", effects:"DISTILLED [FEET][SKIN][TEETH]" },
+  { name:"Sunny Honey", effects:"RAW [MOOD][MIND]" },
+  { name:"Sunflower Petals", effects:"CRUSHED [SKIN] or BOILED [MOOD]" },
+  { name:"Freedom Flowers", effects:"BOILED [MOOD]" },
+  { name:"Vampire's Assistant", effects:"CRUSHED [CURSE]" },
+  { name:"Wild Fire", effects:"RAW [COLD]" },
+  { name:"Laughter of a Child", effects:"CRUSHED [MOOD][LUNGS]" },
+  { name:"Fossil Bone", effects:"CRUSHED [TIME][BONES]" },
+  { name:"Climbing Chilli", effects:"CRUSHED [COLD]" },
+  { name:"Frozen Goblin Hairs", effects:"RAW [COLD]" },
+  { name:"Winter Fur", effects:"CRUSHED [COLD] or [HAIR]" },
+  { name:"Cold Blood", effects:"RAW [BLOOD][SPIRIT]" },
+  { name:"Enchanted Carrot", effects:"BOILED [MAGIC]" },
+];
+
+// Build reagent tag map
+const reagentTagMap = {};
+REAGENTS.forEach(r => {
+  [...(r.effects||'').matchAll(/\[([A-Z]+)\]/g)].forEach(m => {
+    const t = m[1];
+    if (!reagentTagMap[t]) reagentTagMap[t] = [];
+    reagentTagMap[t].push(r.name);
+  });
+});
+
+// ── STATE ──
+const STORM_AILMENTS = [
+  { name: "Storm-sneeze", tier: "novice", timer: 8 },
+  { name: "That Tingly Sensation", tier: "inter", timer: 10 },
+  { name: "A Wicked Curse", tier: "advanced", timer: 8 },
+  { name: "Lightning Nod", tier: "expert", timer: 6 }
+].map(ailment => ({ ...ailment, tags: [], season: "storm", desc: "See the Storm Ailments section in Dance of Seasons for treatment tags and consequences." }));
+let storm = false;
+let rep = 0;
+let nightfall = false;
+let activeSeason = null; // null | "spring" | "summer" | "harvest" | "winter"
+let activeTiers = new Set(["novice"]);
+let history = [];
+
+function tiersForRep(r) {
+  if (r >= 33) return new Set(["novice","inter","advanced","expert"]);
+  if (r >= 22) return new Set(["novice","inter","advanced"]);
+  if (r >= 11) return new Set(["novice","inter"]);
+  return new Set(["novice"]);
+}
+
+function repLabel(r) {
+  if (r >= 33) return { cls:"expert",   text:"Expert (33+)" };
+  if (r >= 22) return { cls:"advanced", text:"Advanced (22–32)" };
+  if (r >= 11) return { cls:"inter",    text:"Intermediate (11–21)" };
+  return { cls:"novice", text:"Novice (0–10)" };
+}
+
+function tierHintText(tiers) {
+  const names = { novice:"Novice", inter:"Intermediate", advanced:"advanced", expert:"Expert" };
+  const active = [...tiers].map(t => names[t]);
+  return "Rolling from: " + active.join(", ") + " ailments";
+}
+
+function updateRepUI() {
+  const r = parseInt(document.getElementById("repInput").value) || 0;
+  rep = r;
+  const lbl = repLabel(r);
+  const tierEl = document.getElementById("repTierLabel");
+  tierEl.className = "rep-tier " + lbl.cls;
+  tierEl.textContent = lbl.text;
+
+  // Auto-set tiers
+  activeTiers = tiersForRep(r);
+  document.querySelectorAll(".tier-btn").forEach(btn => {
+    btn.classList.toggle("on", activeTiers.has(btn.dataset.tier));
+  });
+  document.getElementById("tierHint").textContent = tierHintText(activeTiers);
+}
+
+function getEligibleAilments() {
+  if (nightfall) {
+    return NIGHTFALL_AILMENTS.filter(a => activeTiers.has(a.tier));
+  }
+  let pool = CORE_AILMENTS.filter(a => activeTiers.has(a.tier));
+  if (activeSeason) {
+    const seasonal = (DANCE_AILMENTS[activeSeason] || []).filter(a => activeTiers.has(a.tier) || (a.name === "New Year, New Me" && activeTiers.has("expert")));
+    pool = pool.concat(seasonal);
+  }
+  if (storm) pool = pool.concat(STORM_AILMENTS.filter(a => activeTiers.has(a.tier)));
+  return pool;
+}
+
+function roll() {
+  const pool = getEligibleAilments();
+  if (pool.length === 0) {
+    document.getElementById("resultArea").innerHTML = `<div class="empty-state">No eligible ailments for the current settings.</div>`;
+    return;
+  }
+  const ailment = pool[Math.floor(Math.random() * pool.length)];
+  renderResult(ailment);
+  addHistory(ailment);
+}
+
+const TIER_LABEL = { novice:"Novice", inter:"Intermediate", advanced:"Advanced", expert:"Expert" };
+
+function renderResult(a) {
+  const tagHTML = a.tags.map(t => `
+    <span class="ailment-tag">
+      [${t.t}${t.s ? `<span class="tag-stars">${"★".repeat(t.s)}</span>` : ""}]
+    </span>
+  `).join("");
+
+  const timerHTML = a.timer ? `<span class="timer-badge">⏱ Timer: ${a.timer}</span>` : "";
+
+  // Reagent coverage
+  const neededTags = a.tags.map(t => t.t);
+  const coverageMap = {};
+  neededTags.forEach(t => {
+    if (reagentTagMap[t]) coverageMap[t] = reagentTagMap[t];
+  });
+  const allReagents = [...new Set(Object.values(coverageMap).flat())];
+
+  let reagentHTML = "";
+  if (allReagents.length > 0) {
+    const chips = allReagents.map(r => `<span class="reagent-chip">${r}</span>`).join("");
+    reagentHTML = `
+      <div class="result-reagents">
+        <div class="reagents-label">Reagents that treat these tags</div>
+        <div class="reagent-chips">${chips}</div>
+      </div>
+    `;
+  }
+
+  const extraHTML = a.extra ? `
+    <div class="result-consequence" style="border-top:1px solid var(--rule)"><strong>Extra:</strong> ${a.extra}</div>
+  ` : "";
+  const conseqHTML = a.consequence ? `
+    <div class="result-consequence"><strong>Consequence:</strong> ${a.consequence}</div>
+  ` : "";
+  const SEASON_LABEL = { spring:"Spring", summer:"Summer", harvest:"Harvest", winter:"Winter", storm:"Storm" };
+  const seasonBadge = a.season ? `<span class="season-badge ${a.season}">${SEASON_LABEL[a.season]}</span>` : "";
+
+  document.getElementById("resultArea").innerHTML = `
+    <div class="result-card">
+      <div class="result-header">
+        <h2 class="result-name">${a.name}</h2>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          ${seasonBadge}
+          <span class="result-tier-badge ${a.tier}">${TIER_LABEL[a.tier]}</span>
+        </div>
+      </div>
+      <div class="result-tags">
+        ${tagHTML}
+        ${timerHTML}
+      </div>
+      <div class="result-desc">${a.desc}</div>
+      ${extraHTML}
+      ${conseqHTML}
+      ${reagentHTML}
+    </div>
+  `;
+}
+
+function addHistory(a) {
+  history.unshift(a);
+  if (history.length > 5) history.pop();
+  const list = document.getElementById("historyList");
+  const section = document.getElementById("historySection");
+  section.style.display = "block";
+  list.innerHTML = history.map((h, i) => `
+    <div class="history-item">
+      <span class="history-dot ${h.tier}"></span>
+      <span class="history-name">${h.name}</span>
+      <span style="margin-left:auto;font-size:12px">${TIER_LABEL[h.tier]}</span>
+    </div>
+  `).join("");
+}
+
+// ── PATIENT GENERATION ──
+const PATIENT_DATA = {
+  villager: {
+    firstNames: ["Harkin","Maren","Sorley","Bridie","Callum","Fenella","Dougal","Isla","Tamsin","Rory","Nessa","Ewan","Morwenna","Cormac","Ailsa","Peregrine","Blythe","Oswin","Fionnuala","Leith","Graeme","Tansy","Seumas","Wren","Broderick","Kelpie","Niamh","Hamish","Rowena","Colm","Effie","Phelan","Sibyl","Brogan","Orla","Fergus","Liath","Conal","Deirdre","Ruairi","Mabyn","Alastair","Clodagh","Tiernan","Brigid","Conan","Tara","Daveth","Keavy","Lorcan","Muireann","Padraig","Saoirse","Tadhg","Una","Vyvyan","Wyn","Zara","Aoife","Blaine","Carys","Dafydd","Elspeth","Fleur","Griff","Huw","Isolde","Jarvis","Kerensa"],
+    lastNames: ["Black","Stonemill","Fairweather","Birchwood","Muir","Coldbrook","Thatch","Ironside","Greenholm","Ashford","Crowe","Ferndale","Moorgate","Saltwick","Bramblewood","Kettleburn","Frostholm","Deepwell","Rushmore","Cinderford","Heathwick","Millpond","Underhill","Oakenshield","Willowmere","Stonecroft","Bogsworth","Dunnock","Peatbridge","Cloverfield","Redthorn","Silvertide","Foxhollow","Mirebank","Yarrow","Ashpool","Netherby","Cobblethwaite","Whitlock","Dellwood"],
+    jobs: ["Lumberjack","Baker","Blacksmith","Farmer","Fisherman","Innkeeper","Herbalist","Carpenter","Weaver","Miller","Tanner","Shepherd","Candlemaker","Cobbler","Dairymaid","Cooper","Thatcher","Stonemason","Brewer","Seamstress","Quarryman","Pig farmer","Cheese maker","Chandler","Hedge witch","Midwife","Grave digger","Tax collector","Town crier","Rat catcher"],
+    flavours: [
+      "They arrived at your door looking sheepish and clutching their hat.",
+      "Their neighbours dragged them in, insisting they'd been getting worse for days.",
+      "They turned up just after sunrise, clearly having worked themselves up to it all night.",
+      "They knocked three times before you answered, and nearly bolted when you did.",
+      "Word spread through the village and someone finally talked them into coming to see you.",
+      "They were brought in on a cart, protesting the whole way that they were fine.",
+      "They arrived with a jar of honey and a hopeful look as a sort of unofficial payment.",
+      "They showed up during your breakfast. They did not apologise for this.",
+      "Half the village followed them here out of morbid curiosity.",
+      "They climbed through your window by mistake and decided they may as well ask."
+    ]
+  },
+  adventurer: {
+    firstNames: ["Vorath","Sable","Kettric","Zinna","Dusk","Bramwell","Lysa","Corvin","Flint","Mireille","Ashkar","Vesper","Torben","Quen","Skyla","Darroch","Thorn","Brix","Seren","Falke","Grimshaw","Nox","Calder","Vesna","Oryn","Lachlan","Petra","Caelan","Ysolde","Riven","Dael","Tarquin","Vex","Silvan","Morrigan","Bane","Cressa","Orin","Thyra","Wulfric","Zephyr","Aldric","Bryn","Cassian","Daven","Eldara","Faris","Gwen","Hakon","Isolde","Jorn","Kira","Lucan","Mira","Neve","Oskar","Pyre","Quinn","Rayne","Strix"],
+    lastNames: ["of the Road","Ironblood","Swiftbow","the Unlucky","Dawnchaser","Grimtooth","Nomark","the Scarred","Stormcrow","Halfpenny","the Bold","Silvertongue","Bonechill","Ashveil","the Wanderer","Quickfoot","Ravenscroft","of Nowhere","the Foolhardy","Mistwalker","the Cursed","Blackarrow","Frostbite","the Persistent","Emberveil","the Lost","Steelhand","Doomward","Brightblade","the Stubborn","Ashmantle","the Unloved","Shadowstep","Grimholt","the Mostly Dead","Cinderveil","Ironcrow","the Bewildered","Moonscar","Dustwalker"],
+    jobs: ["Sellsword","Ranger","Rogue","Hedge knight","Bounty hunter","Treasure hunter","Wandering bard","Pilgrim","Disgraced noble","Retired soldier","Monster hunter","Cartographer","Courier","Escaped prisoner","Itinerant healer","Duelist","Tomb raider","Mercenary","Lost squire","Former cultist"],
+    flavours: [
+      "They staggered in off the road, still wearing most of their armour.",
+      "They found your cottage by reputation — apparently it took them three days.",
+      "They arrived boasting about how they didn't really need help, then showed you the wound.",
+      "Their horse arrived first. They caught up a few minutes later.",
+      "They knocked with the pommel of their sword, which you noted was not ideal for your door.",
+      "They came highly recommended by a barmaid in the next village over.",
+      "They slept in your garden overnight and introduced themselves at dawn.",
+      "They barged in mid-sentence telling you a very long story about how this happened.",
+      "They found you foraging and followed you home without asking.",
+      "They tried three other solutions first. None of them worked. Here they are."
+    ]
+  },
+  monster: {
+    firstNames: ["Gnarsh","Blump","Skitter","Vorrg","Mossback","Grubble","Snarl","Thwick","Murble","Fenn","Clatch","Dribble","Hroth","Squench","Blight","Nubbin","Tallow","Skrag","Plonk","Gritch","Flurb","Zog","Wump","Kritch","Snorf","Gloop","Trumble","Mung","Glatch","Sprug","Blort","Nurk","Flitch","Vrog","Snabb","Klump","Dritch","Worble","Snarg","Flench"],
+    lastNames: ["of the Bog","the Twice-Cursed","Understone","Moonchewer","Dirtborn","the Itchy","Swampfoot","Ironbelly","Ashclaw","the Unfortunate","Bonegnaw","Muckfoot","Tanglehorn","the Confused","Grimwart","Deepburrow","the Reluctant","Mudhide","Rootsnarl","the Smelly","Bogbreath","the Remarkably Lost","Stonecruncher","Mirewalker","the Damp","Fungusfoot","the Surprisingly Polite","Rockchewer","Sludgeborn","Nethertoe","Wartchin","the Perpetually Soggy","Mudclaw","the Inexplicably Upright","Grimboggle","Swampgloom","the Rather Pungent","Hollowgnaw","Marshcrawl","Bonebroth"],
+    jobs: ["Bog troll","Cave goblin","River hag","Barrow wight","Forest sprite","Disgruntled ogre","Swamp witch","Feral pixie","Marsh imp","Wandering ghoul","Hedge wraith","Mountain hobgoblin","Cursed scarecrow","Sentient shrub","Lake serpent","Were-something","Animate scarecrow","Dungeon wurm","Disenchanted golem","Fae exile"],
+    flavours: [
+      "It arrived at your door holding a white flag made from a sock.",
+      "It was left on your doorstep overnight like an extremely large, miserable parcel.",
+      "Three villagers escorted it here from a safe distance, then ran.",
+      "It knocked very politely. This was somehow more alarming than if it hadn't.",
+      "It followed the smell of your potions through the forest for two days.",
+      "It communicated its ailment entirely through aggressive pointing.",
+      "It left a pile of shiny rocks outside as payment before you'd even agreed to help.",
+      "It was referred by another monster you apparently helped last season.",
+      "It burst through the door and then looked immediately embarrassed about it.",
+      "It had been sitting outside for hours before you noticed it through the window."
+    ]
+  }
+};
+
+// Shuffle queue — cycles through a list without repeating until exhausted
+const _queues = {};
+function pickNoRepeat(key, arr) {
+  if (!_queues[key] || _queues[key].length === 0) {
+    // refill and shuffle
+    const copy = arr.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    _queues[key] = copy;
+  }
+  return _queues[key].pop();
+}
+
+const SUITS = ["♥","♦","♣","♠"];
+
+function drawPatient() {
+  const suit = SUITS[Math.floor(Math.random() * 4)];
+  let type, typeLabel;
+  if (suit === "♥") { type = "villager";   typeLabel = "Villager"; }
+  else if (suit === "♦") { type = "adventurer"; typeLabel = "Adventurer"; }
+  else if (suit === "♣") { type = "monster";    typeLabel = "Monster"; }
+  else { type = "repeat"; typeLabel = "Repeat Patient"; }
+
+  const card = document.getElementById("patientCard");
+  card.style.display = "block";
+
+  if (type === "repeat") {
+    card.innerHTML = `
+      <div class="patient-card">
+        <span class="patient-type-badge repeat">♠ Repeat Patient</span>
+        <p class="patient-flavour">A familiar face. Draw from your existing patients — one of them has come back with a new complaint, or the last one wasn't quite as cured as they claimed.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const PORTRAIT_STYLE = "black and white ink illustration, clean bold linework, no colour, slightly anime-influenced character design, grounded fantasy aesthetic, detailed hatching and shading, full body portrait on white background, high detail, professional concept art";
+
+  const data = PATIENT_DATA[type];
+  const firstName = pickNoRepeat(`${type}_first`, data.firstNames);
+  const lastName = pickNoRepeat(`${type}_last`, data.lastNames);
+  const job = pickNoRepeat(`${type}_job`, data.jobs);
+  const flavour = pickNoRepeat(`${type}_flavour`, data.flavours);
+  const suitSymbol = suit;
+
+  // Build portrait prompt
+  const typeDesc = {
+    villager: "a weathered medieval villager",
+    adventurer: "a rugged fantasy adventurer",
+    monster: "a fantastical creature or monster character"
+  }[type];
+  const jobLower = job.toLowerCase();
+  const portraitPrompt = `${typeDesc}, ${jobLower}, character named ${firstName} ${lastName}, wearing clothes and carrying equipment fitting their profession, standing pose, ${PORTRAIT_STYLE}`;
+
+  card.innerHTML = `
+    <div class="patient-card">
+      <span class="patient-type-badge ${type}">${suitSymbol} ${typeLabel}</span>
+      <h2 class="patient-name">${firstName} ${lastName}</h2>
+      <div class="patient-job">${job}</div>
+      <p class="patient-flavour">${flavour}</p>
+      <div class="portrait-prompt-wrap">
+        <div class="portrait-prompt-label">Portrait Prompt</div>
+        <div class="portrait-prompt-text" id="promptText">${portraitPrompt}</div>
+        <button class="copy-prompt-btn" id="copyPromptBtn">Copy Prompt</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("copyPromptBtn").addEventListener("click", function() {
+    navigator.clipboard.writeText(portraitPrompt).then(() => {
+      this.textContent = "Copied!";
+      this.classList.add("copied");
+      setTimeout(() => { this.textContent = "Copy Prompt"; this.classList.remove("copied"); }, 2000);
+    }).catch(() => {
+      const el = document.getElementById("promptText");
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+    });
+  });
+}
+
+// ── EVENTS ──
+document.getElementById("repInput").addEventListener("input", updateRepUI);
+
+function updateSeasonHint() {
+  const hint = document.querySelector("#seasonGroup .tier-hint");
+  if (activeSeason) {
+    const names = { spring:"Spring", summer:"Summer", harvest:"Harvest", winter:"Winter" };
+    hint.textContent = `${names[activeSeason]} ailments added to the pool`;
+  } else {
+    hint.textContent = "No season active — rolling Core ailments only";
+  }
+}
+
+document.getElementById("nightfallToggle").addEventListener("click", function() {
+  nightfall = !nightfall;
+  this.classList.toggle("on", nightfall);
+  document.getElementById("seasonGroup").style.display = nightfall ? "none" : "";
+  if (nightfall) {
+    // deactivate season when switching to nightfall
+    if (activeSeason) {
+      document.querySelector(`[data-season="${activeSeason}"]`).classList.remove("on");
+      activeSeason = null;
+    }
+  }
+});
+
+document.querySelectorAll("[data-season]").forEach(btn => {
+  btn.addEventListener("click", function() {
+    const s = this.dataset.season;
+    if (activeSeason === s) {
+      activeSeason = null;
+      this.classList.remove("on");
+    } else {
+      if (activeSeason) {
+        document.querySelector(`[data-season="${activeSeason}"]`).classList.remove("on");
+      }
+      activeSeason = s;
+      this.classList.add("on");
+    }
+    updateSeasonHint();
+  });
+});
+
+document.querySelectorAll(".tier-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const t = btn.dataset.tier;
+    if (activeTiers.has(t)) {
+      if (activeTiers.size === 1) return; // keep at least one
+      activeTiers.delete(t);
+      btn.classList.remove("on");
+    } else {
+      activeTiers.add(t);
+      btn.classList.add("on");
+    }
+    document.getElementById("tierHint").textContent = tierHintText(activeTiers);
+  });
+});
+
+document.getElementById("patientBtn").addEventListener("click", drawPatient);
+document.getElementById("rollBtn").addEventListener("click", roll);
+
+document.getElementById("stormToggle").addEventListener("click", function() {
+  storm = !storm;
+  this.classList.toggle("on", storm);
+  this.setAttribute("aria-pressed", String(storm));
+});
+
+// Init
+updateRepUI();
+</script>
+
+</body></html>
