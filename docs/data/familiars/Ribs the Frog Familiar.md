@@ -28,6 +28,3 @@ SORT file.name ASC
 ```
 
 ## Notes
-- Lives in Glimmerwood Grove
-- Skill only applies in Glimmerwood Grove
-- One free reagents of 7 value or less
