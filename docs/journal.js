@@ -236,7 +236,8 @@ async function load() {
   await Promise.all(files.map(async path => {
     const [, , group, filename] = path.split('/');
     const name = filename.replace(/\.md$/, '');
-    const response = await fetch('./' + path.slice(1).split('/').map(encodeURIComponent).join('/'));
+    const noteUrl = './' + path.slice(1).split('/').map(encodeURIComponent).join('/');
+    const response = await fetch(noteUrl + new URL(import.meta.url).search);
     if (!response.ok) throw new Error('Could not read ' + name);
     const text = await response.text();
     const visits = group === 'entries' ? extractVisits(text) : [];
