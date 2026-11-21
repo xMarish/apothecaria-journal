@@ -194,6 +194,20 @@ function cards(items, showArtwork = false, showPortraits = false) {
   return '<ul class="cards">' + items.map(note => '<li><a href="' + route(note) + '">' + (showArtwork ? renderPotionArtwork(note) : '') + (showPortraitSlots ? renderPortrait(note, true) || '<span class="portrait-thumbnail" aria-hidden="true"></span>' : '') + escape(note.name) + '</a></li>').join('') + '</ul>';
 }
 
+function renderPlaces(items) {
+  const villages = new Map();
+  for (const note of items) {
+    const villageField = note.text.match(/^\*\*Village:\*\*[ \t]*([^\r\n]+)/m);
+    const village = villageField ? plain(villageField[1]) : 'Rannoc Village';
+    const locations = villages.get(village) || [];
+    locations.push(note);
+    villages.set(village, locations);
+  }
+  return [...villages].sort(([a], [b]) => a.localeCompare(b)).map(([village, locations]) =>
+    '<section><h2>' + escape(village) + '</h2>' + cards(locations, false, true) + '</section>'
+  ).join('');
+}
+
 function render() {
   const [group, encoded] = location.hash.slice(1).split('/');
   const requestedName = encoded ? decodeURIComponent(encoded) : '';
@@ -222,7 +236,7 @@ function render() {
     page.innerHTML = '<h1>Potions &amp; Reagents</h1>' + cards(recipes, true);
   } else if (Object.hasOwn(groups, group)) {
     const items = group === 'entries' ? entries : all.filter(item => item.group === group).sort((a,b) => a.name.localeCompare(b.name));
-    page.innerHTML = '<h1>' + groups[group] + '</h1>' + cards(items, false, group === 'characters' || group === 'familiars' || group === 'places');
+    page.innerHTML = '<h1>' + groups[group] + '</h1>' + (group === 'places' ? renderPlaces(items) : cards(items, false, group === 'characters' || group === 'familiars'));
   } else {
     page.innerHTML = '<h1>Mirabel Hollow’s<br>Apothecary Journal</h1><p>Follow Mirabel and her familiars through the village, from foraging trips to the patients at her cottage door.</p><h2>Latest journal entries</h2>' + cards(entries.slice(0,4)) + '<p><a href="#entries">Browse all journal entries</a></p>';
   }
