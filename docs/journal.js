@@ -11,13 +11,45 @@ const entryOrder = note => {
   return match ? +match[1] * 10000 + ({spring:1, summer:2, autumn:3, fall:3, winter:4})[key(match[2])] * 100 + +match[3] : 0;
 };
 
-function inline(text) {
+const reagentImages = new Map();
+const reagentKey = name => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+function loadReagentImages() {
+  const paths = JSON.parse(document.querySelector('#reagent-images').textContent);
+  for (const path of paths) {
+    const filename = path.split('/').at(-1);
+    const name = filename.replace(/^Reagent - [^-]+ - /i, '')
+      .replace(/\.[^.]+$/, '').replace(/^Angient Bubble$/i, 'Ancient Bubble');
+    reagentImages.set(reagentKey(name), path);
+  }
+}
+
+function reagentThumbnail(name) {
+  const path = reagentImages.get(reagentKey(name));
+  if (!path) return '';
+  const src = '.' + path.split('/').map(encodeURIComponent).join('/');
+  return '<img class="reagent-thumbnail" src="' + src + '" alt="" loading="lazy" decoding="async"> ';
+}
+
+function renderIngredients(line) {
+  const heading = '**Ingredients:**';
+  const ingredients = line.slice(heading.length).trim().split(/,\s*/);
+  return '<strong>Ingredients:</strong> ' + ingredients.map(ingredient => {
+    const name = ingredient.replace(/^(?:and\s+)?optional\s+/i, '').replace(/\s*×\s*\d+\s*$/, '');
+    return '<span class="recipe-ingredient">' + reagentThumbnail(name) + inline(ingredient) + '</span>';
+  }).join(', ');
+}
+
+function inline(text, illustrate = false) {
   let result = '', end = 0;
   for (const match of text.matchAll(/(!?)\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g)) {
     result += emphasis(text.slice(end, match.index));
     const note = notes.get(key(match[2]));
     const label = escape(match[3] || match[2]);
-    if (!match[1]) result += note ? '<a href="' + route(note) + '">' + label + '</a>' : label;
+    if (!match[1]) {
+      if (illustrate) result += reagentThumbnail(match[2]);
+      result += note ? '<a href="' + route(note) + '">' + label + '</a>' : label;
+    }
     end = match.index + match[0].length;
   }
   return result + emphasis(text.slice(end));
@@ -35,7 +67,7 @@ function formatTrackingFields(line) {
   return line.slice(0, item.index) + name.trim() + ' × ' + quantity + (rest ? ' — ' + rest : '');
 }
 
-function renderNote(text) {
+function renderNote(text, group) {
   const lines = text.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '').replace(/```dataview[\s\S]*?```/g, '').split(/\r?\n/);
   let html = '', list = false, table = false;
   for (let line of lines) {
@@ -51,12 +83,15 @@ function renderNote(text) {
       html += '<tr>' + line.replace(/^\||\|$/g, '').split('|').map(cell => '<td>' + inline(cell.trim()) + '</td>').join('') + '</tr>';
     } else if (bullet) {
       if (!list) { html += '<ul>'; list = true; }
-      html += '<li>' + inline(line.slice(2)) + '</li>';
+      html += '<li>' + inline(line.slice(2), group === 'entries') + '</li>';
     } else if (/^#+ /.test(line)) {
       const level = Math.min(6, Math.max(2, line.indexOf(' ')));
       html += '<h' + level + '>' + inline(line.slice(line.indexOf(' ') + 1)) + '</h' + level + '>';
     } else {
-      html += '<p>' + inline(line) + '</p>';
+      const body = group === 'potions' && line.startsWith('**Ingredients:**')
+        ? renderIngredients(line)
+        : inline(line, group === 'entries');
+      html += '<p>' + body + '</p>';
     }
   }
   return html + (list ? '</ul>' : '') + (table ? '</tbody></table>' : '');
@@ -88,7 +123,7 @@ function render() {
   if (note && note.group === group) {
     const visits = entries.flatMap(entry => entry.visits.filter(visit => key(visit.name) === key(note.name)).map(visit => ({...visit, entry})));
     const mentions = entries.filter(entry => entry.links.has(key(note.name)));
-    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderNote(note.text)
+    page.innerHTML = '<article><a href="#' + group + '">' + groups[group] + '</a><h1>' + escape(note.name) + '</h1>' + renderNote(note.text, note.group)
       + (visits.length ? '<h2>Patient visits</h2>' + visits.map(visit => {
         const treatment = [visit.recipe, visit.ingredients.join(', ')].filter(Boolean).join(' — ');
         return '<section class="visit"><h3><a href="' + route(visit.entry) + '">' + escape(visit.entry.name) +
@@ -111,6 +146,7 @@ function render() {
 }
 
 async function load() {
+  loadReagentImages();
   const files = JSON.parse(document.querySelector('#files').textContent).filter(path => /^\/data\/(entries|characters|familiars|places|potions)\//.test(path));
   if (!files.length) throw new Error('Journal files are missing.');
   await Promise.all(files.map(async path => {

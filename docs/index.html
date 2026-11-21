@@ -7,7 +7,7 @@ layout: null
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirabel Hollow’s Apothecary Journal</title>
-<link rel="stylesheet" href="journal.css">
+<link rel="stylesheet" href="journal.css?v=reagent-thumbnails">
 </head>
 <body>
 <header><a href="#"><strong>Mirabel Hollow</strong><span>The Apothecary Journal</span></a>
@@ -15,6 +15,7 @@ layout: null
 <main id="page" aria-live="polite">Opening the journal…</main>
 <footer>An unofficial <i>Apothecaria</i> solo playthrough.</footer>
 <script id="files" type="application/json">[{% assign files = site.static_files | where_exp: "file", "file.extname == '.md'" %}{% for file in files %}{% unless forloop.first %},{% endunless %}{{ file.path | jsonify }}{% endfor %}]</script>
-<script type="module" src="journal.js?v=52609a2"></script>
+<script id="reagent-images" type="application/json">[{% assign images = site.static_files | where_exp: "file", "file.path contains '/images/reagents/'" %}{% assign separator = "" %}{% for image in images %}{% if image.extname == '.png' or image.extname == '.webp' or image.extname == '.jpg' or image.extname == '.jpeg' %}{{ separator }}{{ image.path | jsonify }}{% assign separator = "," %}{% endif %}{% endfor %}]</script>
+<script type="module" src="journal.js?v=reagent-thumbnails"></script>
 </body>
 </html>
