@@ -33,6 +33,8 @@ I start with the cure for Darroch. He’s resting in the treatment room. My hors
 
 ### Potion recipe
 
+[[Roseveil Remedy]]
+
 - Ingredients: Fairy Dust ★★ and Wild Rose ★★
 - Tool: Mortar and Pestle
 

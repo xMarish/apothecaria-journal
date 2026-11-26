@@ -40,3 +40,5 @@
 .journal-art--morrow{background-image:url("./images/journal/morrow-journal-scenes-mirabel.webp");background-size:100% 200%}.journal-art--morrow-0{background-position:center top}.journal-art--morrow-1{background-position:center bottom}
 
 @media (min-width: 52rem){.latest-journal .cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.potion-art.potion-art--roseveil{background:url('./images/potions/roseveil-remedy.webp') center / cover no-repeat}
