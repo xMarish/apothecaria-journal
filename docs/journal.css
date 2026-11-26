@@ -23,11 +23,11 @@
 .colour-portrait.portrait-thumbnail{display:flex;justify-content:center}
 .portrait-cell{height:100%;aspect-ratio:1168/1347;background-size:200% 200%;background-repeat:no-repeat}
 .profile-portrait .portrait-cell{width:100%;height:auto}
-.portrait-set-1{background-image:url("./images/coloured-portraits/set-1.webp")}
-.portrait-set-2{background-image:url("./images/coloured-portraits/set-2.webp")}
-.portrait-set-3{background-image:url("./images/coloured-portraits/set-3.webp")}
-.portrait-set-4{background-image:url("./images/coloured-portraits/set-4.webp")}
-.portrait-set-5{background-image:url("./images/coloured-portraits/set-5.webp")}
+.portrait-set-1{background-image:url("./images/coloured-portraits/clean-set-1.webp")}
+.portrait-set-2{background-image:url("./images/coloured-portraits/clean-set-2.webp")}
+.portrait-set-3{background-image:url("./images/coloured-portraits/clean-set-3.webp")}
+.portrait-set-4{background-image:url("./images/coloured-portraits/clean-set-4.webp")}
+.portrait-set-5{background-image:url("./images/coloured-portraits/clean-set-5.webp")}
 .portrait-cell-0{background-position:left top}.portrait-cell-1{background-position:right top}.portrait-cell-2{background-position:left bottom}.portrait-cell-3{background-position:right bottom}
 .portrait-set-5{aspect-ratio:143/165;background-size:300% 200%}.portrait-set-5.portrait-cell-1{background-position:center top}.portrait-set-5.portrait-cell-2{background-position:right top}.portrait-set-5.portrait-cell-3{background-position:left bottom}.portrait-set-5.portrait-cell-4{background-position:center bottom}
 
@@ -45,3 +45,13 @@
 
 .potion-art.potion-art--cloudstep{background:url('./images/potions/cloudstep-remedy.webp') center / contain no-repeat}
 .journal-art.journal-art--summer-week-01{background:url('./images/journal/summer-week-01.webp') center / cover no-repeat}
+
+/* Each atlas cell fits the complete figure with a small transparent margin. */
+.portrait-set-6{background-image:url("./images/coloured-portraits/clean-extras.webp")}
+.portrait-set-6{background-size:300% 200%}
+.portrait-set-6.portrait-cell-1{background-position:center top}
+.portrait-set-6.portrait-cell-2{background-position:right top}
+.portrait-set-6.portrait-cell-3{background-position:left bottom}
+.portrait-set-6.portrait-cell-4{background-position:center bottom}
+.portrait-darroch{background:url("./images/coloured-portraits/clean-darroch.webp") center / contain no-repeat}
+.portrait-cell{aspect-ratio:32/37}

@@ -137,6 +137,12 @@ function portraitPath(note) {
 }
 
 const colourPortraits = new Map([
+  ["Edmund Rushmore", "portrait-set-6 portrait-cell-0"],
+  ["Mirabel Hollow", "portrait-set-6 portrait-cell-1"],
+  ["Rowan Sadge", "portrait-set-6 portrait-cell-2"],
+  ["Morrow", "portrait-set-6 portrait-cell-3"],
+  ["Shadow the Wild Cat", "portrait-set-6 portrait-cell-4"],
+  ["Darroch Ashveil", "portrait-darroch"],
   ["Albart Underwood", 'portrait-set-1 portrait-cell-0'],
   ["Aloinur Balow", 'portrait-set-1 portrait-cell-1'],
   ["Aurelius the Argent", 'portrait-set-1 portrait-cell-2'],
