@@ -126,6 +126,8 @@ I travel home and Shadow gives me:
 
 ### Potion
 
+[[Cloudstep Remedy]]
+
 - [item::[[Ambergris ★★]]] [qty::-1]
 - [item::[[Nimbus Fish ★★★]]] [qty::-1]
 - [item:: Silver] [qty:: 42] 10 rep bonus

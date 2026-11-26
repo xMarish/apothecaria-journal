@@ -94,6 +94,7 @@ function formatTrackingFields(line) {
 }
 
 const potionArtwork = new Map([
+  ['Cloudstep Remedy', 'cloudstep'],
   ['Roseveil Remedy', 'roseveil'],
   ['Guppy Spark Draught', 'guppy'],
   ['Moonbaker’s Balm', 'moonbaker'],
@@ -233,6 +234,10 @@ const springArtwork = [
 
 function renderJournalArtwork(note, thumbnail = false) {
   if (note.group !== 'entries') return '';
+  if (note.name === 'Y1 Summer Week 01') {
+    const label = thumbnail ? 'aria-hidden="true"' : 'role="img" aria-label="Mirabel, in deer form, scratches her name in the dirt while Ribs watches"';
+    return '<div class="journal-art journal-art--summer-week-01" ' + label + '></div>';
+  }
   const match = /^Y1 Spring Week ([0-9]{2})$/.exec(note.name);
   const index = match ? Number(match[1]) - 1 : -1;
   if (!springArtwork[index]) return '';

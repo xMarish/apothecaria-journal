@@ -42,3 +42,6 @@
 @media (min-width: 52rem){.latest-journal .cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 .potion-art.potion-art--roseveil{background:url('./images/potions/roseveil-remedy.webp') center / cover no-repeat}
+
+.potion-art.potion-art--cloudstep{background:url('./images/potions/cloudstep-remedy.webp') center / contain no-repeat}
+.journal-art.journal-art--summer-week-01{background:url('./images/journal/summer-week-01.webp') center / cover no-repeat}
