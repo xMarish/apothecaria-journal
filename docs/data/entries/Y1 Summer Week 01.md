@@ -2,15 +2,10 @@
 **Starting reputation:** 19  
 **Starting silver:** 134
 
-Patient: Darroch Ashveil  
-Ailment: Beach Body (Novice)  
-Tags: Curse ★★, Skin ★  
+Patient: [[Darroch Ashveil]]
+Ailment: [[Beach Body ★★]]
 Timer: 12 + 3 = 15
-
-I have stock of the reagents for this cure, but I want to save them for Nightfall. I think my best options for reagents will be:
-
-- Fairy Dust ★★ (Magic), Forest (6), raw for Curse
-- Wild Rose ★★ (Plant), Forest (2), crushed for Skin
+Reagent: [[Fairy Dust ★★]] [[Wild Rose ★★]]
 
 ## Foraging
 
@@ -23,30 +18,34 @@ Travel to Glimmerwood Grove. I am greeted by [[Ribs the Frog Familiar|Ribs]]. He
 
 Luckily Ribs has a copy of my list and I also have spare reagents at home. I do manage to find some Wild Rose ★★.
 
+-[item::[[Wild Rose ★★]]] [qty::1]
 - Time remaining: 14
+- Forage points: 1
 
 I start making my way back home and I spot Ribs carrying some Fairy Dust ★★. I run over to him, accidentally startling him. I paw at the ground, drawing my name in the dirt so he understands who I am. He nods with a slight froggy giggle, drops the Fairy Dust and hops off home. I pick it up and head home with both reagents in my basket.
 
+-[item::[[Fairy Dust ★★]]] [qty::1]
+
 I start with the cure for Darroch. He’s resting in the treatment room. My horse [[Morrow]] recognises me by my scent and helps by crushing the Wild Rose ★★. We combine them with Sun Sugar, and I write a letter and instructions for Darroch. Morrow hands the potion and letter to Darroch while I hide. I spot [[Shadow the Wild Cat|Shadow]] throwing some Skullcap into storage.
 
-- Payment: 20 silver + 10 reputation bonus + 12 sweet bonus (3 × 4 silver) = 42 silver
-
-### Potion recipe
+### Potion
 
 [[Roseveil Remedy]]
 
-- Ingredients: Fairy Dust ★★ and Wild Rose ★★
-- Tool: Mortar and Pestle
+- [item::[[Wild Rose ★★]]] [qty::-1]
+- [item::[[Fairy Dust ★★]]] [qty::-1]
+- [item:: Silver] [qty:: 42] 10 rep and 3 Points of Sweet (4 Silver ea) bonus
+- No reputation
+- [npc:: [[Darroch Ashveil]]] [ailment::[[Beach Body ★★]]] [outcome:: Cured]
 
-Crush the Wild Rose well, then combine with Fairy Dust. Consume immediately.
 
 ## Downtime
 
-I need to get rid of this Wrong Form ailment.
+I need to get rid of this [[Wrong Form]] ailment.
 
 - Tags: Magic ★★★, Mood ★★, Hair ★, Skin ★
 
-I only need to find some Mermaid’s Gift ★★. I have reagents that will help the other side effects. (Loch (9), boiled, +1 Poison.)
+I only need to find some [[Mermaid’s Gift ★★]]. I have reagents that will help the other side effects. (Loch (9), boiled, +1 Poison.)
 
 I travel to Meltwater Loch.
 
@@ -65,7 +64,7 @@ I travel to Meltwater Loch.
 
 *(10)* I spot Bàs Bàta lying out on the rocks, curled up in pain with a shattered tooth (Core p. 16).
 
-- Gained 1 × Mermaid’s Gift
+- [item::[[Mermaid’s Gift ★★]]] [qty::1]
 
 I travel to Glimmerwood Grove.
 
@@ -84,12 +83,9 @@ I instruct [[Stone Golem]] to build a Glimmerwood Greenhouse this season. I plan
 ## Nightfall
 
 Patient: [[Dachsbun]]  
-Ailment: Stub Toe (Novice)  
-Tags: Pain ★★, Feet ★  
+Ailment: [[Stub Toe]]
 Timer: 6
-
-- Ambergris ★★, Cloud Isles (9), crushed for Pain
-- Nimbus Fish, Cloud Isles (3), crushed for Feet
+Reagents: [[Ambergris ★★]], [[Nimbus Fish ★★★]]
 
 If time permits, look for five more Nimbus Fish or Ambergris.
 
@@ -100,15 +96,15 @@ Travel to the Cloud Isles.
 
 *(4)* Airships let out flares, making the isles much brighter and easier to see. +4 forage points.
 
-- Gained 1 × Nimbus Fish
+- [item::[[Nimbus Fish ★★★]]] [qty::1]
 - Time remaining: 5
 - Forage points: 5
 
 *(3)* A gust blows me off my broom and I fall into another locale.
 
+- [item::[[Nimbus Fish ★★★]]] [qty::2]
 - Time remaining: 4
 - Forage points: 2
-- Gained 2 × Nimbus Fish
 
 Fly back to the Cloud Isles.
 
@@ -117,10 +113,21 @@ Fly back to the Cloud Isles.
 
 *(J)* Invited into Aurora Lighthouse.
 
-- Gained 1 × Ambergris
+- [item::[[Ambergris ★★]]] [qty::1]
 - Time remaining: 2
 - Forage points: 1
 
 *(3)* Gust of wind.
 
-- Gained 1 × Nimbus Fish
+- [item::[[Nimbus Fish ★★★]]] [qty::1]
+
+I travel home and Shadow gives me:
+- [item::[[Moon Lotus ★★]]] [qty::1]
+
+### Potion
+
+- [item::[[Ambergris ★★]]] [qty::-1]
+- [item::[[Nimbus Fish ★★★]]] [qty::-1]
+- [item:: Silver] [qty:: 42] 10 rep bonus
+- No reputation
+- [npc:: [[Dachsbun]]] [ailment::[[Stub Toe]]] [outcome:: Cured]
