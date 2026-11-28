@@ -350,64 +350,6 @@ h1 {
 .reagent-chip.have { border-color: var(--novice); color: var(--novice); background: var(--novice-bg); }
 .reagent-chip.none { opacity: 0.55; }
 
-/* Patient card */
-.patient-section { max-width: 600px; margin: 0 auto 24px; }
-.patient-btn {
-  display: block; width: 100%; padding: 11px 20px;
-  background: var(--bg2); color: var(--fg);
-  border: 1.5px solid var(--rule); border-radius: 8px;
-  font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; font-weight: 600;
-  cursor: pointer; transition: background 0.15s;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.patient-btn:hover { background: var(--bg3); }
-.patient-card {
-  margin-top: 12px; padding: 14px 18px;
-  background: var(--bg2); border: 1.5px solid var(--rule); border-radius: 8px;
-  animation: fadeIn 0.3s ease;
-}
-.patient-type-badge {
-  display: inline-block; font-size: 11px; font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 2px 9px; border-radius: 20px; margin-bottom: 8px;
-}
-.patient-type-badge.villager   { background: var(--novice-bg);   color: var(--novice); }
-.patient-type-badge.adventurer { background: var(--inter-bg);    color: var(--inter); }
-.patient-type-badge.monster    { background: var(--advanced-bg); color: var(--advanced); }
-.patient-type-badge.repeat     { background: var(--bg3);         color: var(--fg2); }
-.patient-name {
-  font-family: 'Crimson Pro', Georgia, serif; font-size: 22px; font-weight: 600;
-  color: var(--fg); margin: 0 0 2px;
-}
-.patient-job { font-size: 13px; color: var(--fg2); margin-bottom: 8px; }
-.patient-flavour {
-  font-family: 'Crimson Pro', serif; font-style: italic;
-  font-size: 14px; color: var(--fg2); line-height: 1.5;
-}
-.portrait-prompt-wrap {
-  margin-top: 10px; padding-top: 10px;
-  border-top: 1px solid var(--rule);
-}
-.portrait-prompt-label {
-  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--fg2); margin-bottom: 6px;
-}
-.portrait-prompt-text {
-  font-size: 12px; color: var(--fg2); font-family: monospace;
-  background: var(--bg); border: 1px solid var(--rule); border-radius: 4px;
-  padding: 8px 10px; line-height: 1.5; margin-bottom: 8px;
-  word-break: break-word;
-}
-.copy-prompt-btn {
-  padding: 5px 14px; border-radius: 6px;
-  border: 1.5px solid var(--rule); background: var(--bg);
-  color: var(--fg2); font-family: 'Source Sans 3', sans-serif;
-  font-size: 12px; font-weight: 600; cursor: pointer;
-  transition: all 0.15s;
-}
-.copy-prompt-btn:hover { background: var(--bg3); }
-.copy-prompt-btn.copied { border-color: var(--novice); color: var(--novice); background: var(--novice-bg); }
-
 /* Empty state */
 .empty-state {
   text-align: center;
@@ -490,11 +432,6 @@ h1 {
       <button class="tier-btn expert" data-tier="expert">Expert</button>
     </div>
   </div>
-</div>
-
-<div class="patient-section">
-  <button class="patient-btn" id="patientBtn">🃏 Draw Patient</button>
-  <div id="patientCard" style="display:none"></div>
 </div>
 
 <button class="roll-btn" id="rollBtn">🎲 Roll Ailment</button>
@@ -889,146 +826,6 @@ function addHistory(a) {
   `).join("");
 }
 
-// ── PATIENT GENERATION ──
-const PATIENT_DATA = {
-  villager: {
-    firstNames: ["Harkin","Maren","Sorley","Bridie","Callum","Fenella","Dougal","Isla","Tamsin","Rory","Nessa","Ewan","Morwenna","Cormac","Ailsa","Peregrine","Blythe","Oswin","Fionnuala","Leith","Graeme","Tansy","Seumas","Wren","Broderick","Kelpie","Niamh","Hamish","Rowena","Colm","Effie","Phelan","Sibyl","Brogan","Orla","Fergus","Liath","Conal","Deirdre","Ruairi","Mabyn","Alastair","Clodagh","Tiernan","Brigid","Conan","Tara","Daveth","Keavy","Lorcan","Muireann","Padraig","Saoirse","Tadhg","Una","Vyvyan","Wyn","Zara","Aoife","Blaine","Carys","Dafydd","Elspeth","Fleur","Griff","Huw","Isolde","Jarvis","Kerensa"],
-    lastNames: ["Black","Stonemill","Fairweather","Birchwood","Muir","Coldbrook","Thatch","Ironside","Greenholm","Ashford","Crowe","Ferndale","Moorgate","Saltwick","Bramblewood","Kettleburn","Frostholm","Deepwell","Rushmore","Cinderford","Heathwick","Millpond","Underhill","Oakenshield","Willowmere","Stonecroft","Bogsworth","Dunnock","Peatbridge","Cloverfield","Redthorn","Silvertide","Foxhollow","Mirebank","Yarrow","Ashpool","Netherby","Cobblethwaite","Whitlock","Dellwood"],
-    jobs: ["Lumberjack","Baker","Blacksmith","Farmer","Fisherman","Innkeeper","Herbalist","Carpenter","Weaver","Miller","Tanner","Shepherd","Candlemaker","Cobbler","Dairymaid","Cooper","Thatcher","Stonemason","Brewer","Seamstress","Quarryman","Pig farmer","Cheese maker","Chandler","Hedge witch","Midwife","Grave digger","Tax collector","Town crier","Rat catcher"],
-    flavours: [
-      "They arrived at your door looking sheepish and clutching their hat.",
-      "Their neighbours dragged them in, insisting they'd been getting worse for days.",
-      "They turned up just after sunrise, clearly having worked themselves up to it all night.",
-      "They knocked three times before you answered, and nearly bolted when you did.",
-      "Word spread through the village and someone finally talked them into coming to see you.",
-      "They were brought in on a cart, protesting the whole way that they were fine.",
-      "They arrived with a jar of honey and a hopeful look as a sort of unofficial payment.",
-      "They showed up during your breakfast. They did not apologise for this.",
-      "Half the village followed them here out of morbid curiosity.",
-      "They climbed through your window by mistake and decided they may as well ask."
-    ]
-  },
-  adventurer: {
-    firstNames: ["Vorath","Sable","Kettric","Zinna","Dusk","Bramwell","Lysa","Corvin","Flint","Mireille","Ashkar","Vesper","Torben","Quen","Skyla","Darroch","Thorn","Brix","Seren","Falke","Grimshaw","Nox","Calder","Vesna","Oryn","Lachlan","Petra","Caelan","Ysolde","Riven","Dael","Tarquin","Vex","Silvan","Morrigan","Bane","Cressa","Orin","Thyra","Wulfric","Zephyr","Aldric","Bryn","Cassian","Daven","Eldara","Faris","Gwen","Hakon","Isolde","Jorn","Kira","Lucan","Mira","Neve","Oskar","Pyre","Quinn","Rayne","Strix"],
-    lastNames: ["of the Road","Ironblood","Swiftbow","the Unlucky","Dawnchaser","Grimtooth","Nomark","the Scarred","Stormcrow","Halfpenny","the Bold","Silvertongue","Bonechill","Ashveil","the Wanderer","Quickfoot","Ravenscroft","of Nowhere","the Foolhardy","Mistwalker","the Cursed","Blackarrow","Frostbite","the Persistent","Emberveil","the Lost","Steelhand","Doomward","Brightblade","the Stubborn","Ashmantle","the Unloved","Shadowstep","Grimholt","the Mostly Dead","Cinderveil","Ironcrow","the Bewildered","Moonscar","Dustwalker"],
-    jobs: ["Sellsword","Ranger","Rogue","Hedge knight","Bounty hunter","Treasure hunter","Wandering bard","Pilgrim","Disgraced noble","Retired soldier","Monster hunter","Cartographer","Courier","Escaped prisoner","Itinerant healer","Duelist","Tomb raider","Mercenary","Lost squire","Former cultist"],
-    flavours: [
-      "They staggered in off the road, still wearing most of their armour.",
-      "They found your cottage by reputation — apparently it took them three days.",
-      "They arrived boasting about how they didn't really need help, then showed you the wound.",
-      "Their horse arrived first. They caught up a few minutes later.",
-      "They knocked with the pommel of their sword, which you noted was not ideal for your door.",
-      "They came highly recommended by a barmaid in the next village over.",
-      "They slept in your garden overnight and introduced themselves at dawn.",
-      "They barged in mid-sentence telling you a very long story about how this happened.",
-      "They found you foraging and followed you home without asking.",
-      "They tried three other solutions first. None of them worked. Here they are."
-    ]
-  },
-  monster: {
-    firstNames: ["Gnarsh","Blump","Skitter","Vorrg","Mossback","Grubble","Snarl","Thwick","Murble","Fenn","Clatch","Dribble","Hroth","Squench","Blight","Nubbin","Tallow","Skrag","Plonk","Gritch","Flurb","Zog","Wump","Kritch","Snorf","Gloop","Trumble","Mung","Glatch","Sprug","Blort","Nurk","Flitch","Vrog","Snabb","Klump","Dritch","Worble","Snarg","Flench"],
-    lastNames: ["of the Bog","the Twice-Cursed","Understone","Moonchewer","Dirtborn","the Itchy","Swampfoot","Ironbelly","Ashclaw","the Unfortunate","Bonegnaw","Muckfoot","Tanglehorn","the Confused","Grimwart","Deepburrow","the Reluctant","Mudhide","Rootsnarl","the Smelly","Bogbreath","the Remarkably Lost","Stonecruncher","Mirewalker","the Damp","Fungusfoot","the Surprisingly Polite","Rockchewer","Sludgeborn","Nethertoe","Wartchin","the Perpetually Soggy","Mudclaw","the Inexplicably Upright","Grimboggle","Swampgloom","the Rather Pungent","Hollowgnaw","Marshcrawl","Bonebroth"],
-    jobs: ["Bog troll","Cave goblin","River hag","Barrow wight","Forest sprite","Disgruntled ogre","Swamp witch","Feral pixie","Marsh imp","Wandering ghoul","Hedge wraith","Mountain hobgoblin","Cursed scarecrow","Sentient shrub","Lake serpent","Were-something","Animate scarecrow","Dungeon wurm","Disenchanted golem","Fae exile"],
-    flavours: [
-      "It arrived at your door holding a white flag made from a sock.",
-      "It was left on your doorstep overnight like an extremely large, miserable parcel.",
-      "Three villagers escorted it here from a safe distance, then ran.",
-      "It knocked very politely. This was somehow more alarming than if it hadn't.",
-      "It followed the smell of your potions through the forest for two days.",
-      "It communicated its ailment entirely through aggressive pointing.",
-      "It left a pile of shiny rocks outside as payment before you'd even agreed to help.",
-      "It was referred by another monster you apparently helped last season.",
-      "It burst through the door and then looked immediately embarrassed about it.",
-      "It had been sitting outside for hours before you noticed it through the window."
-    ]
-  }
-};
-
-// Shuffle queue — cycles through a list without repeating until exhausted
-const _queues = {};
-function pickNoRepeat(key, arr) {
-  if (!_queues[key] || _queues[key].length === 0) {
-    // refill and shuffle
-    const copy = arr.slice();
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    _queues[key] = copy;
-  }
-  return _queues[key].pop();
-}
-
-const SUITS = ["♥","♦","♣","♠"];
-
-function drawPatient() {
-  const suit = SUITS[Math.floor(Math.random() * 4)];
-  let type, typeLabel;
-  if (suit === "♥") { type = "villager";   typeLabel = "Villager"; }
-  else if (suit === "♦") { type = "adventurer"; typeLabel = "Adventurer"; }
-  else if (suit === "♣") { type = "monster";    typeLabel = "Monster"; }
-  else { type = "repeat"; typeLabel = "Repeat Patient"; }
-
-  const card = document.getElementById("patientCard");
-  card.style.display = "block";
-
-  if (type === "repeat") {
-    card.innerHTML = `
-      <div class="patient-card">
-        <span class="patient-type-badge repeat">♠ Repeat Patient</span>
-        <p class="patient-flavour">A familiar face. Draw from your existing patients — one of them has come back with a new complaint, or the last one wasn't quite as cured as they claimed.</p>
-      </div>
-    `;
-    return;
-  }
-
-  const PORTRAIT_STYLE = "black and white ink illustration, clean bold linework, no colour, slightly anime-influenced character design, grounded fantasy aesthetic, detailed hatching and shading, full body portrait on white background, high detail, professional concept art";
-
-  const data = PATIENT_DATA[type];
-  const firstName = pickNoRepeat(`${type}_first`, data.firstNames);
-  const lastName = pickNoRepeat(`${type}_last`, data.lastNames);
-  const job = pickNoRepeat(`${type}_job`, data.jobs);
-  const flavour = pickNoRepeat(`${type}_flavour`, data.flavours);
-  const suitSymbol = suit;
-
-  // Build portrait prompt
-  const typeDesc = {
-    villager: "a weathered medieval villager",
-    adventurer: "a rugged fantasy adventurer",
-    monster: "a fantastical creature or monster character"
-  }[type];
-  const jobLower = job.toLowerCase();
-  const portraitPrompt = `${typeDesc}, ${jobLower}, character named ${firstName} ${lastName}, wearing clothes and carrying equipment fitting their profession, standing pose, ${PORTRAIT_STYLE}`;
-
-  card.innerHTML = `
-    <div class="patient-card">
-      <span class="patient-type-badge ${type}">${suitSymbol} ${typeLabel}</span>
-      <h2 class="patient-name">${firstName} ${lastName}</h2>
-      <div class="patient-job">${job}</div>
-      <p class="patient-flavour">${flavour}</p>
-      <div class="portrait-prompt-wrap">
-        <div class="portrait-prompt-label">Portrait Prompt</div>
-        <div class="portrait-prompt-text" id="promptText">${portraitPrompt}</div>
-        <button class="copy-prompt-btn" id="copyPromptBtn">Copy Prompt</button>
-      </div>
-    </div>
-  `;
-
-  document.getElementById("copyPromptBtn").addEventListener("click", function() {
-    navigator.clipboard.writeText(portraitPrompt).then(() => {
-      this.textContent = "Copied!";
-      this.classList.add("copied");
-      setTimeout(() => { this.textContent = "Copy Prompt"; this.classList.remove("copied"); }, 2000);
-    }).catch(() => {
-      const el = document.getElementById("promptText");
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-    });
-  });
-}
-
 // ── EVENTS ──
 document.getElementById("repInput").addEventListener("input", updateRepUI);
 
@@ -1087,7 +884,6 @@ document.querySelectorAll(".tier-btn").forEach(btn => {
   });
 });
 
-document.getElementById("patientBtn").addEventListener("click", drawPatient);
 document.getElementById("rollBtn").addEventListener("click", roll);
 
 document.getElementById("stormToggle").addEventListener("click", function() {

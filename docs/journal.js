@@ -275,8 +275,8 @@ function renderPlaces(items) {
 }
 
 function renderTools() {
-  page.innerHTML = '<h1>Tools</h1><section id="playing-card-tool" aria-labelledby="card-generator-title"></section><h2>Ailment generator</h2><p><a href="./ailment-generator.html">Open the ailment generator on its own page</a></p>' +
-    '<iframe title="Apothecaria Ailment Generator" src="./ailment-generator.html" sandbox="allow-scripts" style="width:100%;height:78vh;min-height:35rem;border:1px solid #ded5bf;border-radius:.45rem"></iframe>';
+  page.innerHTML = '<h1>Tools</h1><section id="playing-card-tool" aria-labelledby="card-generator-title"></section><h2>Ailment generator</h2><p><a href="./ailment-generator.html?v=ailment-only">Open the ailment generator on its own page</a></p>' +
+    '<iframe title="Apothecaria Ailment Generator" src="./ailment-generator.html?v=ailment-only" sandbox="allow-scripts" style="width:100%;height:78vh;min-height:35rem;border:1px solid #ded5bf;border-radius:.45rem"></iframe>';
   renderCardGenerator(page.querySelector('#playing-card-tool'));
 }
 
