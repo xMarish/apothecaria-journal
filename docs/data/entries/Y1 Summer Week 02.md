@@ -1,11 +1,14 @@
 **Storm:** No  
-**Starting reputation:** 20  
-**Starting silver:** 206
 
 Patient: [[Edmund Rushmore]]
 Ailment: [[Ventriloquest Cough]]
 Timer: 4 + 3 = 7
 Reagent: [[Darkwater ★★]] [[Coldrust ★]]
+
+Raven Loft
+Ailment: Wounded
+Timer: None
+Reagent: I have some [[Hiker's Helper ★]] for the PAIN, I will need [[Hermet Snail ★]] for WOUND.
 
 ## Foraging
 
@@ -19,6 +22,13 @@ Travel to Hero's Hollow
 - [item::[[Darkwater ★★]]] [qty::1]
 - [item::[[Coldrust ★]]] [qty::1]
 - Time remaining: 6
+- Forage points: 1
+
+*(5)* I found a rough map, it has alot of incorrect details but does point out a location for a reagent. 
+
+- [item::[[Hermit Snail ★]]] [qty::1]
+- [item::[[Rat Spit ★]]] [qty::1]
+- Time remaining: 5
 - Forage points: 1
 
 I return home and Shadow gives me:
@@ -35,34 +45,13 @@ I return home and Shadow gives me:
 - No reputation
 - [npc:: [[Edmund Rushmore]]] [ailment::[[Ventriloquest Cough]]] [outcome:: Cured]
 
-
-I crush the Coldrust with my mortar and pestle, add it to a bottle with the raw Darkwater, and shake it well. The Darkwater gives the remedy 3 points of Sweet and causes sleep. I leave out the Sun Sugar.
-
-## Raven Loft
-
-Patient: Raven Loft request  
-Ailment: [[Wounded]]  
-Tags: Wound ★, Pain ★  
-Time remaining on arrival: 12
-
-I have Hiker’s Helper in stock for the pain. I return to Hero’s Hollow for Hermit Snail to treat the wound.
-
-- Forage points: 1
-
-*(5)* I find a rough map. Most of the details are wrong, but it does point me to a reagent.
-
-- [item::[[Hermit Snail ★]]] [qty::1]
-- [item::[[Rat Spit ★]]] [qty::1]
-
-### Potion
+### Potion (Raven Loft)
 
 [[Wayfarer’s Mending Draught]]
 
-Back home, I bring the Hiker’s Helper and Hermit Snail to a boil in the cauldron, then add some Sun Sugar.
-
-- [item::[[Hiker's Helper ★]]] [qty::-1]
 - [item::[[Hermit Snail ★]]] [qty::-1]
-- [item:: Silver] [qty::84] 42 Silver doubled for the Raven Loft request, as recorded in the journal
+- [item::[[Hiker's Helper ★]]] [qty::-1]
+- [item:: Silver] [qty:: 84] (20 + 10 Bonus Rep + 12 (3 Points sweet)) x2
 - No reputation
 
 ## Downtime
@@ -105,8 +94,15 @@ I leave the Isles before I get sunburnt and head to Hero’s Hollow.
 ## Nightfall
 
 Patient: [[Orla Reed]]  
-Ailment: [[Chill]] (Novice)  
+Ailment: [[Chill]]
 Timer: 6, or lose 1 reputation  
 Tags: Cold ★★, Cough ★
 
-I plan to use Jumpkin and Hair of Boar for Orla’s remedy.
+I have the ingredients already for this ailment
+
+### Potion
+
+- [item::[[Jumpkin ★]]] [qty::-1]
+- [item::[[Hair of Boar ★]]] [qty::-1]
+- [item:: Silver] [qty:: 30] 20 + 10 Bonus Rep
+- No reputation
