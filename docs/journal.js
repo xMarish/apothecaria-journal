@@ -96,6 +96,8 @@ function formatTrackingFields(line) {
 
 const potionArtwork = new Map([
   ['Cloudstep Remedy', 'cloudstep'],
+  ['Darkwater Drowse', 'darkwater-drowse'],
+  ['Wayfarer’s Mending Draught', 'wayfarers-mending-draught'],
   ['Roseveil Remedy', 'roseveil'],
   ['Guppy Spark Draught', 'guppy'],
   ['Moonbaker’s Balm', 'moonbaker'],
