@@ -55,3 +55,5 @@
 .portrait-set-6.portrait-cell-4{background-position:center bottom}
 .portrait-darroch{background:url("./images/coloured-portraits/clean-darroch.webp") center / contain no-repeat}
 .portrait-cell{aspect-ratio:32/37}
+
+.card-controls,.card-options,.drawn-cards{display:flex;flex-wrap:wrap;gap:.65rem;align-items:end}.card-controls label{display:grid}.card-controls input,.card-controls select,.card-controls button{font:inherit;padding:.35rem .55rem}.card-controls input{width:6rem}#playing-card-tool details{margin-top:1rem}.card-options{margin-top:.5rem}.card-options label{white-space:nowrap}.drawn-cards{padding:0;list-style:none}.drawn-cards li{display:grid;justify-items:center;width:7rem;min-height:8rem;padding:.65rem;text-align:center;background:#fffdf6;border:1px solid #918368;border-radius:.55rem;color:#26392f}.drawn-cards li.card-red{color:#a0253d}.card-face{font-size:2rem;white-space:nowrap}.card-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}

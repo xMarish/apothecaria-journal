@@ -1,3 +1,4 @@
+import { renderCardGenerator } from './card-generator.js?v=playing-cards';
 const groups = { entries: 'Journal Entries', characters: 'Characters', familiars: 'Familiars', places: 'Places', potions: 'Potions & Reagents' };
 const page = typeof document !== 'undefined' && document.querySelector('#page');
 const escape = value => value.replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'})[char]);
@@ -274,8 +275,9 @@ function renderPlaces(items) {
 }
 
 function renderTools() {
-  page.innerHTML = '<h1>Tools</h1><p><a href="./ailment-generator.html">Open the ailment generator on its own page</a></p>' +
+  page.innerHTML = '<h1>Tools</h1><section id="playing-card-tool" aria-labelledby="card-generator-title"></section><h2>Ailment generator</h2><p><a href="./ailment-generator.html">Open the ailment generator on its own page</a></p>' +
     '<iframe title="Apothecaria Ailment Generator" src="./ailment-generator.html" sandbox="allow-scripts" style="width:100%;height:78vh;min-height:35rem;border:1px solid #ded5bf;border-radius:.45rem"></iframe>';
+  renderCardGenerator(page.querySelector('#playing-card-tool'));
 }
 
 function render() {
